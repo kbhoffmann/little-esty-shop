@@ -21,9 +21,9 @@ RSpec.describe 'merchant item index page' do
     end
 
     it 'the item name is a link to the merchant items show page' do
-      click_link("#{@item1.name}")
+      click_link("#{@item.name}")
 
-      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/#{@item1.id}")
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/#{@item.id}")
     end
   end
 
@@ -36,25 +36,20 @@ RSpec.describe 'merchant item index page' do
 
       visit "/merchants/#{merch_1.id}/items"
 
-      within("#item-#{item_1.id}") do
-        expect(item_1.status).to eq("disabled")
-
-        first(:button, "Enable").click
-
-        expect(page).to have_button("Disable")
-        expect(current_path).to eq("/merchants/#{merch_1.id}/items")
-        updated_item_1 = Item.find(item_1.id)
-        expect(updated_item_1.status).to eq("enabled")
-      end
-
-      within("#item-#{item_2.id}") do
+      within("#Enabled-items") do
         expect(item_2.status).to eq("enabled")
         first(:button, "Disable").click
-
-        expect(page).to have_button("Enable")
         expect(current_path).to eq("/merchants/#{merch_1.id}/items")
         updated_item_2 = Item.find(item_2.id)
         expect(updated_item_2.status).to eq("disabled")
+      end
+
+      within("#Disabled-items") do
+        expect(item_1.status).to eq("disabled")
+        first(:button, "Enable").click
+        expect(current_path).to eq("/merchants/#{merch_1.id}/items")
+        updated_item_1 = Item.find(item_1.id)
+        expect(updated_item_1.status).to eq("enabled")
       end
     end
   end
