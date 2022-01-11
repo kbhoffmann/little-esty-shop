@@ -34,9 +34,15 @@ class MerchantItemsController < ApplicationController
 
   def create
     merchant = Merchant.find(params[:merchant_id])
-    merchant.items.create(item_params)
-
-    redirect_to "/merchants/#{merchant.id}/items"
+    item = merchant.items.new(item_params)
+    if item.save
+      redirect_to "/merchants/#{merchant.id}/items"
+    else
+      message = item.errors.full_messages.to_sentence
+      flash[:notice] = "Item not created: #{message}"
+      
+      redirect_to "/merchants/#{merchant.id}/items"
+    end
   end
 
   private

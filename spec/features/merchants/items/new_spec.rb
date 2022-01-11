@@ -28,10 +28,26 @@ RSpec.describe "New Item Creation" do
     expect(current_path).to eq("/merchants/#{merchant_1.id}/items")
 
     visit "/merchants/#{merchant_1.id}/items"
-    
+
     new_item = Item.last
     expect(new_item.name).to eq("Sweet T-Shirt")
     expect(page).to have_content(new_item.name)
     expect(new_item.status).to eq("disabled")
+  end
+
+  it 'shows the user an error if the form is not filled out correctly' do
+    merchant_1 = Merchant.create!(name: "Clothing Store")
+    item_1 = merchant_1.items.create!(name: "Sweater", description: "Red Sweater", unit_price: 40)
+    item_2 = merchant_1.items.create!(name: "Hat", description: "Beanie", unit_price: 20, status: 1)
+    item_3 = merchant_1.items.create!(name: "Shoes", description: "Running Shoes", unit_price: 80)
+
+    visit "/merchants/#{merchant_1.id}/items/new"
+
+    click_on("Submit")
+
+    expect(current_path).to eq("/merchants/#{merchant_1.id}/items")
+    
+    expect(page).to have_content("Item not created")
+    expect(page).to have_link("Add New Item")
   end
 end
