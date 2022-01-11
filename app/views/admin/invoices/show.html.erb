@@ -1,3 +1,4 @@
+
 <div class="container">
   <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand mb-0 h1">Admin Dashboard</a>
@@ -16,6 +17,8 @@
 </div>
 <div class="container">
   <h4 style="text-align:center">Invoice #<%= @invoice.id %></h4>
+
+
   <%= form_with model: [:admin, @invoice], local: true do |f| %>
     <%= f.label :status %>
     <%= f.select :status, ["in progress", "completed", "cancelled"] %>
