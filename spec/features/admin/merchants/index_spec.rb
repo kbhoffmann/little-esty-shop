@@ -67,4 +67,8 @@ RSpec.describe 'admin merchants index' do
   it 'has a link to create a new merchant on a new page' do
     expect(page).to have_link("Create a New Merchant", href: "/admin/merchants/new")
   end
+
+  it 'has a section for the top five merchants by total revenue' do
+    expect(page).to have_content("Top Five Merchants By Revenue")
+  end
 end
