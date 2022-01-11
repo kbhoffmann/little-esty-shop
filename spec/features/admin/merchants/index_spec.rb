@@ -17,21 +17,29 @@ RSpec.describe 'admin merchants index' do
   let!(:item_6) {FactoryBot.create(:item, merchant_id: merchant_6.id)}
   let!(:item_7) {FactoryBot.create(:item, merchant_id: merchant_7.id)}
 
-  let!(:transaction_1) {FactoryBot.create(:transaction, result: "success")}
-  let!(:transaction_2) {FactoryBot.create(:transaction, result: "success")}
-  let!(:transaction_3) {FactoryBot.create(:transaction, result: "success")}
-  let!(:transaction_4) {FactoryBot.create(:transaction, result: "success")}
-  let!(:transaction_5) {FactoryBot.create(:transaction, result: "success")}
-  let!(:transaction_6) {FactoryBot.create(:transaction, result: "success")}
-  let!(:transaction_7) {FactoryBot.create(:transaction, result: "success")}
+  let!(:invoice_1) {FactoryBot.create(:invoice)}
+  let!(:invoice_2) {FactoryBot.create(:invoice)}
+  let!(:invoice_3) {FactoryBot.create(:invoice)}
+  let!(:invoice_4) {FactoryBot.create(:invoice)}
+  let!(:invoice_5) {FactoryBot.create(:invoice)}
+  let!(:invoice_6) {FactoryBot.create(:invoice)}
+  let!(:invoice_7) {FactoryBot.create(:invoice)}
 
-  let!(:invoice_item_1) {FactoryBot.create(:invoice_item, invoice_id: transaction_1.invoice.id, item_id: item_1.id, quantity: 1, unit_price: 10)}
-  let!(:invoice_item_2) {FactoryBot.create(:invoice_item, invoice_id: transaction_2.invoice.id, item_id: item_2.id, quantity: 2, unit_price: 10)}
-  let!(:invoice_item_3) {FactoryBot.create(:invoice_item, invoice_id: transaction_3.invoice.id, item_id: item_3.id, quantity: 3, unit_price: 10)}
-  let!(:invoice_item_4) {FactoryBot.create(:invoice_item, invoice_id: transaction_4.invoice.id, item_id: item_4.id, quantity: 4, unit_price: 10)}
-  let!(:invoice_item_5) {FactoryBot.create(:invoice_item, invoice_id: transaction_5.invoice.id, item_id: item_5.id, quantity: 5, unit_price: 10)}
-  let!(:invoice_item_6) {FactoryBot.create(:invoice_item, invoice_id: transaction_6.invoice.id, item_id: item_6.id, quantity: 6, unit_price: 10)}
-  let!(:invoice_item_7) {FactoryBot.create(:invoice_item, invoice_id: transaction_7.invoice.id, item_id: item_7.id, quantity: 7, unit_price: 10)}
+  let!(:transaction_1) {FactoryBot.create(:transaction, result: "success", invoice: invoice_1)}
+  let!(:transaction_2) {FactoryBot.create(:transaction, result: "success", invoice: invoice_2)}
+  let!(:transaction_3) {FactoryBot.create(:transaction, result: "success", invoice: invoice_3)}
+  let!(:transaction_4) {FactoryBot.create(:transaction, result: "success", invoice: invoice_4)}
+  let!(:transaction_5) {FactoryBot.create(:transaction, result: "success", invoice: invoice_5)}
+  let!(:transaction_6) {FactoryBot.create(:transaction, result: "success", invoice: invoice_6)}
+  let!(:transaction_7) {FactoryBot.create(:transaction, result: "success", invoice: invoice_7)}
+
+  let!(:invoice_item_1) {FactoryBot.create(:invoice_item, invoice: invoice_1, item_id: item_1.id, quantity: 1, unit_price: 10)}
+  let!(:invoice_item_2) {FactoryBot.create(:invoice_item, invoice: invoice_2, item_id: item_2.id, quantity: 2, unit_price: 10)}
+  let!(:invoice_item_3) {FactoryBot.create(:invoice_item, invoice: invoice_3, item_id: item_3.id, quantity: 3, unit_price: 10)}
+  let!(:invoice_item_4) {FactoryBot.create(:invoice_item, invoice: invoice_4, item_id: item_4.id, quantity: 4, unit_price: 10)}
+  let!(:invoice_item_5) {FactoryBot.create(:invoice_item, invoice: invoice_5, item_id: item_5.id, quantity: 5, unit_price: 10)}
+  let!(:invoice_item_6) {FactoryBot.create(:invoice_item, invoice: invoice_6, item_id: item_6.id, quantity: 6, unit_price: 10)}
+  let!(:invoice_item_7) {FactoryBot.create(:invoice_item, invoice: invoice_7, item_id: item_7.id, quantity: 7, unit_price: 10)}
   before(:each) do
     visit '/admin/merchants'
   end
@@ -106,6 +114,15 @@ RSpec.describe 'admin merchants index' do
         expect(invoice_item_6.item.merchant.name).to appear_before(invoice_item_5.item.merchant.name)
         expect(invoice_item_5.item.merchant.name).to appear_before(invoice_item_4.item.merchant.name)
         expect(invoice_item_4.item.merchant.name).to appear_before(invoice_item_3.item.merchant.name)
+      end
+    end
+
+    it 'has names as links which lead to the merchants show page' do
+      within "#top-five-merchants" do
+        save_and_open_page
+        click_link "#{invoice_item_7.item.merchant.name}"
+
+        expect(current_path).to eq("/admin/merchants/#{invoice_item_7.item.merchant.id}")
       end
     end
   end

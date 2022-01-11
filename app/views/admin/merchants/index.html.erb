@@ -28,8 +28,9 @@
 
 <h3>Top Five Merchants By Revenue</h3>
 <div id="top-five-merchants">
-
 <% @merchants.top_five_merchants.each do |merchant| %>
-  <p><%= merchant.name %></p>
+  <p><%= link_to merchant.name, admin_merchant_path(merchant.id) %>
+  <%= require 'pry'; binding.pry %>
+  <%= merchant.invoices.first.total_revenue %></p>
 <% end %>
 </div>
