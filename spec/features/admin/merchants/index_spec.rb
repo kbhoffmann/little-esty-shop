@@ -105,7 +105,9 @@ RSpec.describe 'admin merchants index' do
 
   describe 'Top 5 Merchants Section' do
     it 'has a section for the top five merchants by total revenue' do
-      expect(page).to have_content("Top Five Merchants By Revenue")
+      within "#top-five-merchants" do
+        expect(page).to have_content("Top Five Merchants By Revenue")
+      end
     end
 
     it 'has the names of each of the top 5 merchants' do
