@@ -40,7 +40,7 @@ class Merchant < ApplicationRecord
     items.where(status: status_enum)
   end
 
-  def self.top_5_merchants
+  def self.top_five_merchants
     joins(invoices: :invoice_items)
       .joins(:transactions)
       .where(transactions: { result: 1 })

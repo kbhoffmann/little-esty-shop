@@ -106,7 +106,7 @@ RSpec.describe 'admin merchants index' do
         expect(invoice_item_6.item.merchant.name).to appear_before(invoice_item_5.item.merchant.name)
         expect(invoice_item_5.item.merchant.name).to appear_before(invoice_item_4.item.merchant.name)
         expect(invoice_item_4.item.merchant.name).to appear_before(invoice_item_3.item.merchant.name)
-    end
+      end
     end
   end
 end
