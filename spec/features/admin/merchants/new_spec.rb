@@ -5,7 +5,7 @@ RSpec.describe 'New Merchant Creation' do
     it 'links to a new page where a new merchant can be created via a form' do
       visit '/admin/merchants'
 
-      click_link('Create a New Merchant')
+      click_link('New Merchant')
       expect(current_path).to eq('/admin/merchants/new')
     end
 
