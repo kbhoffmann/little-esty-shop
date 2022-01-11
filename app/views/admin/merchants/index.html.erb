@@ -26,11 +26,12 @@
 </div>
 
 
-<h3>Top Five Merchants By Revenue</h3>
 <div id="top-five-merchants">
+<h3>Top Five Merchants By Revenue</h3>
 <% @merchants.top_five_merchants.each do |merchant| %>
-  <p><%= link_to merchant.name, admin_merchant_path(merchant.id) %>
-  <%= require 'pry'; binding.pry %>
-  <%= merchant.invoices.first.total_revenue %></p>
+  <div id="merchant-<%= merchant.id %>">
+    <p><%= link_to merchant.name, admin_merchant_path(merchant.id) %>
+      |  Total Revenue: $<%= merchant.revenue_by_merchant %></p>
+  </div>
 <% end %>
 </div>

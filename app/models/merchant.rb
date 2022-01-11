@@ -50,7 +50,12 @@ class Merchant < ApplicationRecord
       .order(merchant_revenue: :desc)
   end
 
+
   def self.filter_merchant_status(status_enum)
     where(status: status_enum)
+  end
+
+  def revenue_by_merchant
+    Merchant.joins(:invoice_items).where(id: self.id).sum("invoice_items.unit_price * invoice_items.quantity")
   end
 end
