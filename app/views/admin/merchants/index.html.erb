@@ -25,4 +25,11 @@
   <% end %>
 </div>
 
+
 <h3>Top Five Merchants By Revenue</h3>
+<div id="top-five-merchants">
+
+<% @merchants.top_5_merchants.each do |merchant| %>
+  <p><%= merchant.name %></p>
+<% end %>
+</div>
