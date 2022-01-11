@@ -1,7 +1,26 @@
-<h1>Create a New Merchant</h1>
+<div class="container">
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand mb-0 h1">Admin Dashboard</a>
+    <ul class="nav nav-pills justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link" href="/admin">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="<%= admin_merchants_path %>">Merchants</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<%= admin_invoices_path %>">Invoices</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<div class="container">
 
-<%= form_with url: "/admin/merchants", method: :post, local: true do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <%= f.submit "Create Merchant" %>
-<% end %>
+  <h4 style="text-align:center">New Merchant</h4>
+
+  <%= form_with url: "/admin/merchants", method: :post, local: true do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+    <%= f.submit "Create Merchant" %>
+  <% end %>
+</div>

@@ -1,21 +1,48 @@
-<h1>ADMIN Invoice #<%= @invoice.id %></h1>
-
-Customer: <%= @invoice.customer_name %><br>
-Created at: <%= @invoice.pretty_created_at %><br>
+<div class="container">
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand mb-0 h1">Admin Dashboard</a>
+    <ul class="nav nav-pills justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link" href="/admin">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<%= admin_merchants_path %>">Merchants</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="<%= admin_invoices_path %>">Invoices</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<div class="container">
+  <h4 style="text-align:center">Invoice #<%= @invoice.id %></h4>
   <%= form_with model: [:admin, @invoice], local: true do |f| %>
     <%= f.label :status %>
     <%= f.select :status, ["in progress", "completed", "cancelled"] %>
     <%= f.submit "Update Invoice Status"%>
   <% end %>
-<h3>Items:</h3>
-<hr>
-  <% @invoice.items_info.each_with_index do |info, index| %>
-      <div id="invoice-item-<%= index %>">
-        Item name: <%= info.name %><br>
-        Qty: <%= info.quantity %><br>
-        Unit price: <%= format_price(info.unit_price) %><br>
-        <%= info.status %><hr>
-      </div>
-  <% end %>
+    Created on: <%= @invoice.pretty_created_at %><br>
+    Total: <%= format_price(@invoice.total_revenue) %><br>
 
-  Total: <%= format_price(@invoice.total_revenue) %><br>
+    <h4>Customer:</h4>
+    <%= @invoice.customer_name %><br><br>
+
+    <h5>Items on this invoice:</h5>
+    <table>
+      <tr>
+        <th>Item name</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Status</th>
+      </tr>
+      <% @invoice.items_info.each_with_index do |info, index| %>
+        <div id="invoice-item-<%= index %>">
+          <tr>
+            <td><%= info.name %></td>
+            <td><%= info.quantity %></td>
+            <td><%= format_price(info.unit_price) %></td>
+            <td><%= info.status %></td>
+          <tr>
+        </div>
+      <% end %>
+</div>
