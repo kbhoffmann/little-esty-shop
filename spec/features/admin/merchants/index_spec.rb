@@ -119,7 +119,6 @@ RSpec.describe 'admin merchants index' do
 
     it 'has names as links which lead to the merchants show page' do
       within "#top-five-merchants" do
-        save_and_open_page
         click_link "#{invoice_item_7.item.merchant.name}"
 
         expect(current_path).to eq("/admin/merchants/#{invoice_item_7.item.merchant.id}")
