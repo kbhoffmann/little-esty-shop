@@ -68,7 +68,24 @@ RSpec.describe 'admin merchants index' do
     expect(page).to have_link("Create a New Merchant", href: "/admin/merchants/new")
   end
 
-  it 'has a section for the top five merchants by total revenue' do
-    expect(page).to have_content("Top Five Merchants By Revenue")
+  describe 'Top 5 Merchants Section' do
+    let!(:invoice_item_1) {FactoryBot.create(:invoice_item, quantity: 1, unit_price: 10)}
+    let!(:invoice_item_2) {FactoryBot.create(:invoice_item, quantity: 2, unit_price: 10)}
+    let!(:invoice_item_3) {FactoryBot.create(:invoice_item, quantity: 3, unit_price: 10)}
+    let!(:invoice_item_4) {FactoryBot.create(:invoice_item, quantity: 4, unit_price: 10)}
+    let!(:invoice_item_5) {FactoryBot.create(:invoice_item, quantity: 5, unit_price: 10)}
+    let!(:invoice_item_6) {FactoryBot.create(:invoice_item, quantity: 6, unit_price: 10)}
+    let!(:invoice_item_7) {FactoryBot.create(:invoice_item, quantity: 7, unit_price: 10)}
+
+    it 'has a section for the top five merchants by total revenue' do
+      expect(page).to have_content("Top Five Merchants By Revenue")
+    end
+
+    it 'has the names of each of the top 5 merchants' do
+      expect(invoice_item_7.item.merchant).to appear_before(invoice_item_6.item.merchant)
+      expect(invoice_item_6.item.merchant).to appear_before(invoice_item_5.item.merchant)
+      expect(invoice_item_5.item.merchant).to appear_before(invoice_item_4.item.merchant)
+      expect(invoice_item_4.item.merchant).to appear_before(invoice_item_3.item.merchant)
+    end
   end
 end
