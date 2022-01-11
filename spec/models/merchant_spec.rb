@@ -61,7 +61,21 @@ RSpec.describe Merchant, type: :model do
         expect(Merchant.top_five_merchants).to eq(merchants)
       end
     end
+
+    describe '#revenue_by_merchant' do
+      it 'returns the total revenue of a merchant' do
+        expect(merchant_7.revenue_by_merchant).to eq(70)
+        expect(merchant_6.revenue_by_merchant).to eq(60)
+        expect(merchant_5.revenue_by_merchant).to eq(50)
+        expect(merchant_4.revenue_by_merchant).to eq(40)
+        expect(merchant_3.revenue_by_merchant).to eq(30)
+      end
+    end
+
+
   end
+
+
 
   describe 'instance methods' do
     let!(:merchant_1) {FactoryBot.create(:merchant)}
