@@ -12,14 +12,14 @@ RSpec.describe "Merchant Items Show Page" do
 
   it 'shows the item name, description, current selling price' do
 
-    expect(page).to have_content("-#{@item1.name}")
-    expect(page).to have_content("-#{@item1.description}")
-    expect(page).to have_content("-$#{@item1.unit_price}.00")
-    expect(page).to_not have_content("-#{@item2.name}")
-    expect(page).to_not have_content("-#{@item2.description}")
-    expect(page).to_not have_content("-#{@item2.unit_price}")
-    expect(page).to_not have_content("-#{@item3.name}")
-    expect(page).to_not have_content("-#{@item3.description}")
-    expect(page).to_not have_content("-#{@item3.unit_price}")
+    expect(page).to have_content("#{@item1.name}")
+    expect(page).to have_content("Description: #{@item1.description}")
+    expect(page).to have_content("Current Price: $#{@item1.unit_price}.00")
+    expect(page).to_not have_content("#{@item2.name}")
+    expect(page).to_not have_content("Description: #{@item2.description}")
+    expect(page).to_not have_content("Current Price: #{@item2.unit_price}")
+    expect(page).to_not have_content("#{@item3.name}")
+    expect(page).to_not have_content("Description: #{@item3.description}")
+    expect(page).to_not have_content("Current Price: #{@item3.unit_price}")
   end
 end
