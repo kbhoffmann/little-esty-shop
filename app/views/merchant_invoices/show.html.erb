@@ -9,7 +9,7 @@
 <div id= "item_id<%= item.id %>">
 <h2>Item Name: <%= item.name %></h2>
 <p>Quantity: <%= item.invoice_item_quantity(@invoice) %></p>
-<p>Unit Price: <%= item.invoice_item_unit_price(@invoice) %></p>
+<p>Unit Price: <%= format_price(item.invoice_item_unit_price(@invoice)) %></p>
 <p>Item Status: <%= item.invoice_item_status(@invoice) %></p> 
 <%= form_with url: "/merchants/#{@invoice.merchant_invoice_id(@invoice)}/invoices/#{@invoice.id}", method: :patch, local: true do |form| %>
   <%= form.select :change_status, ['packaged', 'pending', 'shipped'], selected: item.invoice_item_status(@invoice) %>
