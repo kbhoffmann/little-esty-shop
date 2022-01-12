@@ -19,12 +19,11 @@ class Merchant < ApplicationRecord
   end
 
   def ready_items
-    Item.joins(:invoice_items)
-      .group(:id)
-      .where(invoice_items: {status: "packaged"})
-      .select(:name, :id)
-      .limit(5)
-      .order(:created_at)
+    Item.joins(invoice_items: :invoice)
+        .where(invoice_items: {status: "packaged"})
+        .limit(5)
+        .select("items.*, invoices.created_at")
+        .order("invoices.created_at asc")
   end
 
   def top_items
