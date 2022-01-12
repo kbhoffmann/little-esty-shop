@@ -165,7 +165,7 @@ RSpec.describe 'merchant item index page' do
         visit "/merchants/#{@merch_1.id}/items"
 
       within("#top-items") do
-        save_and_open_page
+      
         expect(page).to have_content("$2800000.00 in sales")
         expect(page).to have_content("$1000000.00 in sales")
         expect(page).to have_content("$600000.00 in sales")
