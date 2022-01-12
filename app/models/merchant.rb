@@ -40,7 +40,22 @@ class Merchant < ApplicationRecord
     items.where(status: status_enum)
   end
 
+  def self.top_five_merchants
+    joins(invoices: :invoice_items)
+      .joins(:transactions)
+      .where(transactions: { result: 1 })
+      .select("merchants.*, SUM(invoice_items.unit_price * invoice_items.quantity) AS merchant_revenue")
+      .group(:id)
+      .limit(5)
+      .order(merchant_revenue: :desc)
+  end
+
+
   def self.filter_merchant_status(status_enum)
     where(status: status_enum)
+  end
+
+  def revenue_by_merchant
+    Merchant.joins(:invoice_items).where(id: self.id).sum("invoice_items.unit_price * invoice_items.quantity")
   end
 end
