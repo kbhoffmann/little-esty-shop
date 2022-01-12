@@ -44,10 +44,8 @@ RSpec.describe "New Item Creation" do
     it 'shows the user an error if the new form is not filled out with anything' do
       click_on("Submit")
 
-      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items")
-
       expect(page).to have_content("Item not created")
-      expect(page).to have_link("Add New Item")
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/new")
     end
 
     it 'shows the user an error if the new form is not filled out with the name' do
@@ -56,10 +54,8 @@ RSpec.describe "New Item Creation" do
 
       click_on("Submit")
 
-      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items")
-
       expect(page).to have_content("Item not created")
-      expect(page).to have_link("Add New Item")
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/new")
     end
 
     it 'shows the user an error if the new form is not filled out with the description' do
@@ -68,10 +64,8 @@ RSpec.describe "New Item Creation" do
 
       click_on("Submit")
 
-      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items")
-
       expect(page).to have_content("Item not created")
-      expect(page).to have_link("Add New Item")
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/new")
     end
 
     it 'shows the user an error if the new form is not filled out with the unit price' do
@@ -80,10 +74,8 @@ RSpec.describe "New Item Creation" do
 
       click_on("Submit")
 
-      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items")
-
       expect(page).to have_content("Item not created")
-      expect(page).to have_link("Add New Item")
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/new")
     end
   end
 end

@@ -40,8 +40,8 @@ class MerchantItemsController < ApplicationController
     else
       message = item.errors.full_messages.to_sentence
       flash[:notice] = "Item not created: #{message}"
-      
-      redirect_to "/merchants/#{merchant.id}/items"
+
+      redirect_to "/merchants/#{merchant.id}/items/new"
     end
   end
 
