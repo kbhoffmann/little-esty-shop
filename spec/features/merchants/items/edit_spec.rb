@@ -23,10 +23,10 @@ RSpec.describe 'MerchantItems edit page' do
 
     fill_in :name, with: "Smallie"
     fill_in :description, with: "Smallmouth Bass"
-    fill_in :unit_price, with: 400
+    fill_in :unit_price, with: 40000
     click_button "Update Item"
 
-    expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/#{@item1.id}") 
+    expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/#{@item1.id}")
 
     expect(page).to have_content("Smallie")
     expect(page).to have_content("Smallmouth Bass")
