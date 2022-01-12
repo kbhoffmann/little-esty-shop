@@ -28,10 +28,54 @@ RSpec.describe "New Item Creation" do
     expect(current_path).to eq("/merchants/#{merchant_1.id}/items")
 
     visit "/merchants/#{merchant_1.id}/items"
-    
+
     new_item = Item.last
     expect(new_item.name).to eq("Sweet T-Shirt")
     expect(page).to have_content(new_item.name)
     expect(new_item.status).to eq("disabled")
+  end
+
+  describe 'error message for incomplete new item form' do
+    before(:each) do
+      @merchant_1 = Merchant.create!(name: "Clothing Store")
+      visit "/merchants/#{@merchant_1.id}/items/new"
+    end
+
+    it 'shows the user an error if the new form is not filled out with anything' do
+      click_on("Submit")
+
+      expect(page).to have_content("Item not created")
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/new")
+    end
+
+    it 'shows the user an error if the new form is not filled out with the name' do
+      fill_in('Description' , with: "Blue T-shirt with Logo")
+      fill_in('Unit price', with: 25)
+
+      click_on("Submit")
+
+      expect(page).to have_content("Item not created")
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/new")
+    end
+
+    it 'shows the user an error if the new form is not filled out with the description' do
+      fill_in('Name' , with: "Sweet T-Shirt")
+      fill_in('Unit price', with: 25)
+
+      click_on("Submit")
+
+      expect(page).to have_content("Item not created")
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/new")
+    end
+
+    it 'shows the user an error if the new form is not filled out with the unit price' do
+      fill_in('Name' , with: "Sweet T-Shirt")
+      fill_in('Description' , with: "Blue T-shirt with Logo")
+
+      click_on("Submit")
+
+      expect(page).to have_content("Item not created")
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/new")
+    end
   end
 end
