@@ -2,16 +2,6 @@
 <%= link_to "Items", merchant_items_path %><br>
 <%= link_to "Invoices", merchant_invoices_path %>
 
-
-<% @merchant.top_customers.each do |customer| %>
-  <p><div id="customer-<%= customer.first_name %>">
-  <%= customer.last_name %>
-  <%= customer.transaction_count %>
-  </div>
-  </p>
-<% end %>
-</div>
-
 <h2>Items Ready To Ship</h2>
 
   <% @merchant.ready_items.each do |item| %>
@@ -21,3 +11,14 @@
       <%= item.date_created %>
     </div></p>
   <% end %>
+
+  <h2>Favorite Customers</h2>
+  
+  <% @merchant.top_customers.each do |customer| %>
+    <p><div id="customer-<%= customer.first_name %>">
+    <%= customer.last_name %>
+    <%= customer.transaction_count %>
+    </div>
+    </p>
+  <% end %>
+  </div>
