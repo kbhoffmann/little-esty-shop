@@ -1,6 +1,15 @@
-<h1><%= @merchant.name %> discounts</h1>
+<h1><%= @merchant.name %> Discounts</h1>
 
 <% @merchant.discounts.each do |discount| %>
   <% link_to "Discount #{discount.id}", "/merchants/#{@merchant.id}/discounts/#{discount.id}" %>
   Discount amount: <%= (discount.amount * 100).to_i %>% off of <%= discount.threshold %> items
 <% end %>
+
+<div id="upcoming-holidays">
+  <h2>Upcoming Holidays</h2>
+
+  <% @facade.holidays.first(3).each do |holiday| %>
+    <%= holiday.date %>: 
+    <%= holiday.name %><br>
+  <% end %>
+</div>
