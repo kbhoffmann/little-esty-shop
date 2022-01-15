@@ -1,0 +1,6 @@
+<h1><%= @merchant.name %> discounts</h1>
+
+<% @merchant.discounts.each do |discount| %>
+  <% link_to "Discount #{discount.id}", "/merchants/#{@merchant.id}/discounts/#{discount.id}" %>
+  Discount amount: <%= (discount.amount * 100).to_i %>% off of <%= discount.threshold %> items
+<% end %>
