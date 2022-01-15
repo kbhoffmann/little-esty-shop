@@ -55,4 +55,9 @@ RSpec.describe 'Merchant Dashboard' do
   it 'has a section for Items Ready to Ship' do
     expect(page).to have_content("Items Ready To Ship")
   end
+
+  it 'has a link to view current discounts offered' do
+    click_link("Discounts")
+    expect(current_path).to eq("/merchants/#{merchant_1.id}/discounts")
+  end 
 end
