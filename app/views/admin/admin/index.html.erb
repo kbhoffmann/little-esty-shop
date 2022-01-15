@@ -13,7 +13,7 @@
     <th>Number of Successful Transactions</th>
   </tr>
   <% @customers.top_5.each do |customer| %>
-    <div id="top-customer-<%= customer.last_name %>">
+    <div id="top-customer-<%= customer.id %>">
       <tr>
         <td><%= customer.first_name %> <%= customer.last_name %></td>
         <td><%= customer.transaction_count %></td>
@@ -21,10 +21,3 @@
     </div>
   <% end %>
 </table>
-
-<h3>Incomplete Invoices</h3>
-
-<% @invoices.incomplete.each do |invoice| %>
-  <p>Invoice: <%= link_to invoice.id, "/admin/invoices/#{invoice.id}" %>
-  Date Created: <%= invoice.pretty_created_at %></p>
-<% end %>

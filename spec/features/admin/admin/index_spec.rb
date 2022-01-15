@@ -76,41 +76,17 @@ RSpec.describe 'admin index page' do
   end
 
   it 'shows number of successful transactions for top 5 customers' do
-    within("#top-customer-#{customer_2.last_name}") do
+    within("#top-customer-#{customer_2.id}") do
       expect(page).to have_content(5)
     end
-    within("#top-customer-#{customer_4.last_name}") do
+    within("#top-customer-#{customer_4.id}") do
       expect(page).to have_content(4)
     end
-    within("#top-customer-#{customer_1.last_name}") do
+    within("#top-customer-#{customer_1.id}") do
       expect(page).to have_content(3)
     end
-    within("#top-customer-#{customer_3.last_name}") do
+    within("#top-customer-#{customer_3.id}") do
       expect(page).to have_content(1)
     end
   end
-
-  it 'has a section for Incomplete Invoices' do
-    expect(page).to have_content("Incomplete Invoices")
-  end
-
-  it 'has a list of all invoices with unshipped items' do
-    expect(page).to have_content(invoice_item_1.invoice.id)
-    expect(page).to have_content(invoice_item_2.invoice.id)
-  end
-
-  it 'has invoices which are all links to that invoices admin show page' do
-    expect(page).to have_link("#{invoice_item_1.invoice.id}", href: "/admin/invoices/#{invoice_item_1.invoice.id}")
-    expect(page).to have_link("#{invoice_item_2.invoice.id}", href: "/admin/invoices/#{invoice_item_2.invoice.id}")
-  end
-
-  it 'lists the invoices displays the date they were created' do
-    expect(page).to have_content(invoice_item_1.invoice.created_at.strftime("%A, %B %-d, %Y"))
-    expect(page).to have_content(invoice_item_2.invoice.created_at.strftime("%A, %B %-d, %Y"))
-  end
-
-  it 'lists in order' do
-    expect(invoice_item_1.invoice.created_at.strftime("%A, %B %-d, %Y")).to appear_before(invoice_item_2.invoice.created_at.strftime("%A, %B %-d, %Y"))
-  end
-
 end

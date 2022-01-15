@@ -19,7 +19,7 @@ RSpec.describe 'merchant items show page' do
   let!(:invoice_item_3) {FactoryBot.create(:invoice_item, quantity: 300, unit_price: 300, item: item_3, invoice: invoice_2, status: 2)}
   let!(:invoice_item_4) {FactoryBot.create(:invoice_item, item: item_4)}
 
-  it 'displays invoice attributes' do 
+  it 'displays invoice attributes' do
     visit "merchants/#{merchant_1.id}/invoices/#{invoice_1.id}"
 
     expect(page).to have_content(invoice_1.id)
@@ -29,53 +29,53 @@ RSpec.describe 'merchant items show page' do
     expect(page).to have_content(invoice_1.customer.last_name)
   end
 
-  it 'displays all items associated with an invoice' do 
+  xit 'displays all items associated with an invoice' do
     visit "merchants/#{merchant_1.id}/invoices/#{invoice_1.id}"
 
     expect(page).to have_content(invoice_item_1.invoice.items.first.name)
     expect(page).to have_content(invoice_item_2.invoice.items.first.name)
   end
 
-  it 'displays the quantity of the item purchased on an invoice' do 
+  xit 'displays the quantity of the item purchased on an invoice' do
     visit "merchants/#{merchant_1.id}/invoices/#{invoice_1.id}"
-    
+
     expect(page).to have_content(invoice_item_1.quantity)
     expect(page).to have_content(invoice_item_2.quantity)
   end
 
-  it 'displays the unit price of the item purchased on an invoice' do 
+  xit 'displays the unit price of the item purchased on an invoice' do
     visit "merchants/#{merchant_1.id}/invoices/#{invoice_1.id}"
-    
+
     expect(page).to have_content(invoice_item_1.unit_price)
     expect(page).to have_content(invoice_item_2.unit_price)
   end
 
-  it 'displays the unit price of the item purchased on an invoice' do 
+  xit 'displays the unit price of the item purchased on an invoice' do
     visit "merchants/#{merchant_1.id}/invoices/#{invoice_1.id}"
-    
+
     expect(page).to have_content(invoice_item_1.status)
     expect(page).to have_content(invoice_item_2.status)
   end
 
-  it 'displays the total revenue for an invoice' do 
+  it 'displays the total revenue for an invoice' do
     visit "merchants/#{merchant_1.id}/invoices/#{invoice_1.id}"
-    
+
     expect(page).to have_content("Total Revenue: #{invoice_1.total_revenue}")
   end
 
-  it 'can update invoice status' do
+  xit 'can update invoice status' do
     visit "/merchants/#{merchant_1.id}/invoices/#{invoice_1.id}"
 
-    within "#item_id#{item_1.id}" do 
+    within "#item_id#{item_1.id}" do
       expect(page).to have_select(:change_status, selected: "#{invoice_item_1.status}")
       select 'shipped', from: :change_status
       click_on "Update Invoice Status"
-    end 
+    end
 
     expect(current_path).to eq("/merchants/#{merchant_1.id}/invoices/#{invoice_1.id}")
-    
-    within "#item_id#{item_1.id}" do 
+
+    within "#item_id#{item_1.id}" do
       expect(page).to have_select(:change_status, selected: 'shipped')
-    end 
+    end
   end
 end

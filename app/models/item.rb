@@ -13,6 +13,10 @@ class Item < ApplicationRecord
             .select('invoices.*, sum(invoice_items.unit_price * invoice_items.quantity) as revenue')
             .group(:id)
             .order('revenue desc', 'created_at desc')
-            .first&.created_at&.to_date
+            .first&.created_at
+  end
+
+  def pretty_created_at
+    created_at.strftime("%A, %B %-d, %Y")
   end
 end

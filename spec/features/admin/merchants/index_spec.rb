@@ -126,27 +126,5 @@ RSpec.describe 'admin merchants index' do
         expect(current_path).to eq("/admin/merchants/#{invoice_item_7.item.merchant.id}")
       end
     end
-
-    it 'has the revenue generated from each merchant' do
-      within "#merchant-#{merchant_7.id}" do
-        expect(page).to have_content("Total Revenue: $70")
-      end
-
-      within "#merchant-#{merchant_6.id}" do
-        expect(page).to have_content("Total Revenue: $60")
-      end
-
-      within "#merchant-#{merchant_5.id}" do
-        expect(page).to have_content("Total Revenue: $50")
-      end
-
-      within "#merchant-#{merchant_4.id}" do
-        expect(page).to have_content("Total Revenue: $40")
-      end
-
-      within "#merchant-#{merchant_3.id}" do
-        expect(page).to have_content("Total Revenue: $30")
-      end
-    end
   end
 end
