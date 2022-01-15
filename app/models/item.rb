@@ -7,25 +7,12 @@ class Item < ApplicationRecord
 
   enum status: [:disabled, :enabled]
 
-  def invoice_item_quantity(invoice)
-    InvoiceItem.find_by(item_id: self.id, invoice_id: invoice.id).quantity
-  end
-
-  def invoice_item_unit_price(invoice)
-    InvoiceItem.find_by(item_id: self.id, invoice_id: invoice.id).unit_price
-  end
-
-  def invoice_item_status(invoice)
-    InvoiceItem.find_by(item_id: self.id, invoice_id: invoice.id).status
-  end
-
-  def date_created
-    invoices.first.created_at.strftime("%A, %B %-d, %Y")
-  end
-
-  def top_day
-      invoices.select("invoices.created_at, invoice_items.quantity")
-              .order(:quantity)
-              .last.created_at
+  def best_day
+    invoices.joins(:invoice_items)
+            .where('invoices.status = 2')
+            .select('invoices.*, sum(invoice_items.unit_price * invoice_items.quantity) as revenue')
+            .group(:id)
+            .order('revenue desc', 'created_at desc')
+            .first&.created_at&.to_date
   end
 end

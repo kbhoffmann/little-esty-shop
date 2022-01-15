@@ -26,15 +26,7 @@ class Invoice < ApplicationRecord
   end
 
   def total_revenue
-    item_total = invoice_items.find_by_sql("select quantity * unit_price as item_total from invoice_items")
-    item_total.pluck(:item_total).sum
+    invoice_items.sum("unit_price * quantity")
   end
 
-  def self.incomplete
-    joins(:invoice_items).where.not(invoice_items: { status: 2 }).order(:created_at).distinct
-  end
-
-  def merchant_invoice_id(invoice)
-    Item.find((InvoiceItem.find_by(invoice_id: invoice.id)).item_id).merchant_id
-  end
 end

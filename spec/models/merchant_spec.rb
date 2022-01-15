@@ -1,27 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Merchant, type: :model do
-  describe "relationships" do
-    it { should have_many :items }
-  end
-
   describe "validations" do
     it { should validate_presence_of(:name) }
   end
 
-  describe "class methods" do
-    let!(:merchant_enabled) {FactoryBot.create(:merchant, status: "enabled")}
-    let!(:merchant_disabled) {FactoryBot.create(:merchant, status: "disabled")}
-
-    describe "filter_merchant_status" do
-      it 'filters merchants by status' do
-        expect(Merchant.filter_merchant_status(0)).to eq([merchant_disabled])
-        expect(Merchant.filter_merchant_status(1)).to eq([merchant_enabled])
-      end
-    end
+  describe "relationships" do
+    it { should have_many :items }
   end
 
-  describe 'Top Five Merchants' do
+  describe 'class methods' do
     let!(:merchant_1) {FactoryBot.create(:merchant, status: "disabled")}
     let!(:merchant_2) {FactoryBot.create(:merchant, status: "enabled")}
     let!(:merchant_3) {FactoryBot.create(:merchant, status: "enabled")}
@@ -30,8 +18,8 @@ RSpec.describe Merchant, type: :model do
     let!(:merchant_6) {FactoryBot.create(:merchant)}
     let!(:merchant_7) {FactoryBot.create(:merchant)}
 
-    let!(:item_1) {FactoryBot.create(:item, merchant_id: merchant_1.id)}
-    let!(:item_2) {FactoryBot.create(:item, merchant_id: merchant_2.id)}
+    let!(:item_1) {FactoryBot.create(:item, merchant_id: merchant_1.id, status: 0)}
+    let!(:item_2) {FactoryBot.create(:item, merchant_id: merchant_2.id, status: 1)}
     let!(:item_3) {FactoryBot.create(:item, merchant_id: merchant_3.id)}
     let!(:item_4) {FactoryBot.create(:item, merchant_id: merchant_4.id)}
     let!(:item_5) {FactoryBot.create(:item, merchant_id: merchant_5.id)}
@@ -54,28 +42,21 @@ RSpec.describe Merchant, type: :model do
     let!(:invoice_item_6) {FactoryBot.create(:invoice_item, invoice_id: transaction_6.invoice.id, item_id: item_6.id, quantity: 6, unit_price: 10)}
     let!(:invoice_item_7) {FactoryBot.create(:invoice_item, invoice_id: transaction_7.invoice.id, item_id: item_7.id, quantity: 7, unit_price: 10)}
 
-    describe '::top_five_merchants' do
+    describe '::top_merchants' do
       it 'returns the top five merchants by revenue' do
         merchants = [merchant_7, merchant_6, merchant_5, merchant_4, merchant_3]
 
-        expect(Merchant.top_five_merchants).to eq(merchants)
+        expect(Merchant.top_merchants).to eq(merchants)
       end
     end
 
-    describe '#revenue_by_merchant' do
-      it 'returns the total revenue of a merchant' do
-        expect(merchant_7.revenue_by_merchant).to eq(70)
-        expect(merchant_6.revenue_by_merchant).to eq(60)
-        expect(merchant_5.revenue_by_merchant).to eq(50)
-        expect(merchant_4.revenue_by_merchant).to eq(40)
-        expect(merchant_3.revenue_by_merchant).to eq(30)
+    describe '::filter_merchant_status'
+      it 'returns merchants based on status' do
+        expect(Merchant.filter_merchant_status(0)).to include(merchant_1)
+        expect(Merchant.filter_merchant_status(1)).to include(merchant_2)
       end
     end
-
-
   end
-
-
 
   describe 'instance methods' do
     let!(:merchant_1) {FactoryBot.create(:merchant)}
@@ -122,11 +103,11 @@ RSpec.describe Merchant, type: :model do
     let!(:transaction_15) {FactoryBot.create(:transaction, invoice: invoice_5, result: "success")}
     let!(:transaction_16) {FactoryBot.create(:transaction, invoice: invoice_5, result: "failed")}
 
-    let!(:invoice_item_1) {FactoryBot.create(:invoice_item, invoice: invoice_1, item: item_1, status: "pending")}
-    let!(:invoice_item_2) {FactoryBot.create(:invoice_item, invoice: invoice_2, item: item_2, status: "pending")}
-    let!(:invoice_item_3) {FactoryBot.create(:invoice_item, invoice: invoice_3, item: item_3, status: "packaged")}
-    let!(:invoice_item_4) {FactoryBot.create(:invoice_item, invoice: invoice_4, item: item_4, status: "packaged")}
-    let!(:invoice_item_5) {FactoryBot.create(:invoice_item, invoice: invoice_5, item: item_5, status: "packaged")}
+    let!(:invoice_item_1) {FactoryBot.create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 1, unit_price: 100, status: "pending")}
+    let!(:invoice_item_2) {FactoryBot.create(:invoice_item, invoice: invoice_2, item: item_2, quantity: 2, unit_price: 100, status: "pending")}
+    let!(:invoice_item_3) {FactoryBot.create(:invoice_item, invoice: invoice_3, item: item_3, quantity: 3, unit_price: 100, status: "packaged")}
+    let!(:invoice_item_4) {FactoryBot.create(:invoice_item, invoice: invoice_4, item: item_4, quantity: 4, unit_price: 100, status: "packaged")}
+    let!(:invoice_item_5) {FactoryBot.create(:invoice_item, invoice: invoice_5, item: item_5, quantity: 5, unit_price: 100, status: "packaged")}
 
     describe '#top_customers' do
       it 'returns the top 5 customers for a merchant' do
@@ -148,71 +129,11 @@ RSpec.describe Merchant, type: :model do
         expect(merchant_1.filter_item_status(1)).to include(item_2, item_4)
       end
     end
-  end
 
-  describe "#top_items" do
-    before (:each) do
-      @merch_1 = Merchant.create!(name: "Cat Stuff")
-      @merch_2 = Merchant.create!(name: "Dog Stuff")
-
-      @cust1 = FactoryBot.create(:customer)
-      @cust2 = FactoryBot.create(:customer)
-      @cust3 = FactoryBot.create(:customer)
-
-      @inv1 = @cust1.invoices.create!(status: 1)
-      @tran1 = FactoryBot.create(:transaction, invoice: @inv1,  result: 1)
-
-      @inv2 = @cust1.invoices.create!(status: 1)
-      @tran2 = FactoryBot.create(:transaction, invoice: @inv2,  result: 1)
-
-      @inv3 = @cust2.invoices.create!(status: 1)
-      @tran3 = FactoryBot.create(:transaction, invoice: @inv3,  result: 1)
-
-      @inv4 = @cust2.invoices.create!(status: 1)
-      @tran4 = FactoryBot.create(:transaction, invoice: @inv4,  result: 1)
-
-      @inv5 = @cust3.invoices.create!(status: 1)
-      @tran5 = FactoryBot.create(:transaction, invoice: @inv5,  result: 1)
-
-      @inv6 = @cust3.invoices.create!(status: 0)
-      @tran6 = FactoryBot.create(:transaction, invoice: @inv6,  result: 1)
-
-      @inv7 = @cust3.invoices.create!(status: 1)
-      @tran7 = FactoryBot.create(:transaction, invoice: @inv7,  result: 0)
-
-      @inv8 = @cust3.invoices.create!(status: 0)
-      @tran8 = FactoryBot.create(:transaction, invoice: @inv8,  result: 0)
-
-      @item1 = FactoryBot.create(:item, merchant: @merch_1, unit_price: 100)
-      @item2 = FactoryBot.create(:item, merchant: @merch_1, unit_price: 200)
-      @item3 = FactoryBot.create(:item, merchant: @merch_1, unit_price: 300)
-      @item4 = FactoryBot.create(:item, merchant: @merch_1, unit_price: 400)
-      @item5 = FactoryBot.create(:item, merchant: @merch_1, unit_price: 500)
-      @item6 = FactoryBot.create(:item, merchant: @merch_1, unit_price: 600)
-      @item7 = FactoryBot.create(:item, merchant: @merch_1, unit_price: 700)
-      @item8 = FactoryBot.create(:item, merchant: @merch_2, unit_price: 10000)
-
-      @ii_1 = InvoiceItem.create!(invoice: @inv1, item: @item7, quantity: 20, unit_price: 700)
-      @ii_2 = InvoiceItem.create!(invoice: @inv1, item: @item5, quantity: 10, unit_price: 500)
-      @ii_3 = InvoiceItem.create!(invoice: @inv2, item: @item7, quantity: 20, unit_price: 700)
-      @ii_4 = InvoiceItem.create!(invoice: @inv2, item: @item5, quantity: 10, unit_price: 500)
-      @ii_4 = InvoiceItem.create!(invoice: @inv2, item: @item1, quantity: 30, unit_price: 100)
-      @ii_5 = InvoiceItem.create!(invoice: @inv3, item: @item4, quantity: 3, unit_price: 400)
-      @ii_6 = InvoiceItem.create!(invoice: @inv3, item: @item1, quantity: 30, unit_price: 100)
-      @ii_7 = InvoiceItem.create!(invoice: @inv3, item: @item2, quantity: 5, unit_price: 200)
-      @ii_8 = InvoiceItem.create!(invoice: @inv4, item: @item3, quantity: 5, unit_price: 300)
-      @ii_9 = InvoiceItem.create!(invoice: @inv5, item: @item3, quantity: 5, unit_price: 300)
-      @ii_10 = InvoiceItem.create!(invoice: @inv5, item: @item6, quantity: 1, unit_price: 600)
-
-      @ii_11 = InvoiceItem.create!(invoice: @inv6, item: @item6, quantity: 2000, unit_price: 600)
-      @ii_12 = InvoiceItem.create!(invoice: @inv7, item: @item6, quantity: 2000, unit_price: 600)
-      @ii_13 = InvoiceItem.create!(invoice: @inv8, item: @item6, quantity: 2000, unit_price: 600)
-      @ii_14 = InvoiceItem.create!(invoice: @inv8, item: @item8, quantity: 2000, unit_price: 10000)
-    end
-
-    it 'returns the top 5 items for a merchant ranked by total revenue generated' do
-        top_5_items = [@item7, @item5, @item1, @item3, @item4]
-      expect(@merch_1.top_items).to eq(top_5_items)
+    describe '#top_items' do
+      it 'returns the top 5 items by revenue for a merchant' do
+        top_5_items = []
+        expect(merchant_1.top_items).to eq(top_5_items)
+      end
     end
   end
-end

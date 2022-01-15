@@ -13,75 +13,40 @@ RSpec.describe Invoice, type: :model do
   end
 
   describe 'instance methods' do
-    before(:each) do
-      @customer = FactoryBot.create(:customer, first_name: "Cookie", last_name: "Monster")
-      @invoice = FactoryBot.create(:invoice, customer: @customer, created_at: Date.today)
-      @invoice2 = FactoryBot.create(:invoice)
-      @item = FactoryBot.create(:item, status: "enabled")
-      @item2 = FactoryBot.create(:item)
-      @invoiceitem = FactoryBot.create(:invoice_item, invoice: @invoice, item: @item, status: "pending", quantity: 5, unit_price: 1000)
-      @invoiceitem2 = FactoryBot.create(:invoice_item, invoice: @invoice2, item: @item2, quantity: 10, unit_price: 2000)
-    end
+    let!(:customer) {FactoryBot.create(:customer, first_name: "Cookie", last_name: "Monster")}
+    let!(:invoice_1) {FactoryBot.create(:invoice, customer: customer, created_at: Date.today)}
+    let!(:invoice_2) {FactoryBot.create(:invoice)}
+    let!(:item_1) {FactoryBot.create(:item, status: "enabled")}
+    let!(:item_2) {FactoryBot.create(:item)}
+    let!(:invoice_item_1) {FactoryBot.create(:invoice_item, invoice: invoice_1, item: item_1, status: "pending", quantity: 5, unit_price: 1000)}
+    let!(:invoice_item_2) {FactoryBot.create(:invoice_item, invoice: invoice_1, item: item_2, quantity: 10, unit_price: 2000)}
 
-    describe 'pretty_created_at' do
+    describe '#pretty_created_at' do
       it 'formats created_at datetime' do
-        expect(@invoice.pretty_created_at).to eq(Date.today.strftime("%A, %B %-d, %Y"))
+        expect(invoice_1.pretty_created_at).to eq(Date.today.strftime("%A, %B %-d, %Y"))
       end
     end
 
-    describe 'customer_name' do
+    describe '#customer_name' do
       it 'outputs customer full name' do
-        expect(@invoice.customer_name).to eq("Cookie Monster")
+        expect(invoice_1.customer_name).to eq("Cookie Monster")
       end
     end
 
-    describe 'items_info' do
+    describe '#items_info' do
       it 'shows invoice items with order info' do
-        first = @invoice.items_info.first
-        expect(first.name).to eq(@item.name)
-        expect(first.quantity).to eq(@invoiceitem.quantity)
-        expect(first.status).to eq(@invoiceitem.status)
-        expect(first.unit_price).to eq(@invoiceitem.unit_price)
+        first = invoice_1.items_info.first
+        expect(first.name).to eq(item_1.name)
+        expect(first.quantity).to eq(invoice_item_1.quantity)
+        expect(first.status).to eq(invoice_item_1.status)
+        expect(first.unit_price).to eq(invoice_item_1.unit_price)
       end
     end
 
-    describe 'total_revenue' do
+    describe '#total_revenue' do
       it 'calculates total revenue for invoice' do
-        expect(@invoice.total_revenue).to eq(25000)
+        expect(invoice_1.total_revenue).to eq(25000)
       end
-    end
-
-
-  end
-
-  describe '::incomplete' do
-    let!(:invoice_6) {FactoryBot.create(:invoice, created_at: "Sun, 9 Jan 2022 06:10:00 UTC +00:00")}
-    let!(:invoice_7) {FactoryBot.create(:invoice, created_at: "Mon, 10 Jan 2022 06:15:00 UTC +00:00")}
-
-    let!(:invoice_item_1) {FactoryBot.create(:invoice_item, invoice: invoice_6, status: "pending")}
-    let!(:invoice_item_2) {FactoryBot.create(:invoice_item, invoice: invoice_7, status: "packaged")}
-    let!(:invoice_item_3) {FactoryBot.create(:invoice_item, status: "shipped")}
-    let!(:invoice_item_4) {FactoryBot.create(:invoice_item, status: "shipped")}
-
-    it 'returns all of the invoices which havent yet shipped, in order from oldest to newest' do
-      expect(Invoice.incomplete).to include(invoice_item_1.invoice)
-      expect(Invoice.incomplete).to include(invoice_item_2.invoice)
-    end
-
-    it 'is ordered from oldest to newest' do
-      expect(Invoice.incomplete).to eq([invoice_item_1.invoice, invoice_item_2.invoice])
-    end
-  end
-
-  describe 'merchant by invoice id' do 
-    let!(:merchant_1) {FactoryBot.create(:merchant)}
-    let!(:item_1) {FactoryBot.create(:item, merchant: merchant_1, unit_price: 100)}
-    let!(:invoice_1) {FactoryBot.create(:invoice, status: 0)}
-    let!(:transaction_1) {FactoryBot.create(:transaction, invoice: invoice_1, credit_card_expiration_date: Date.today, result: 0)}
-    let!(:invoice_item_1) {FactoryBot.create(:invoice_item, quantity: 100, unit_price: 100, item: item_1, invoice: invoice_1, status: 0)}
-
-    it 'returns merchant id tied to invoice' do 
-      expect(invoice_1.merchant_invoice_id(invoice_1)).to eq(merchant_1.id)
     end
   end
 end
