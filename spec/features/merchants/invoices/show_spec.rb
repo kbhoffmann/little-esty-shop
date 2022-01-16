@@ -4,7 +4,7 @@ RSpec.describe 'merchant items show page' do
   let!(:merchant_1) {FactoryBot.create(:merchant)}
   let!(:merchant_2) {FactoryBot.create(:merchant)}
 
-  let!(:item_1) {FactoryBot.create(:item, id: 123456789, merchant: merchant_1, unit_price: 100)}
+  let!(:item_1) {FactoryBot.create(:item, merchant: merchant_1, unit_price: 100)}
   let!(:item_2) {FactoryBot.create(:item, merchant: merchant_1, unit_price: 50)}
   let!(:item_3) {FactoryBot.create(:item, merchant: merchant_1, unit_price: 300)}
   let!(:item_4) {FactoryBot.create(:item, merchant: merchant_2, unit_price: 400)}
@@ -16,12 +16,16 @@ RSpec.describe 'merchant items show page' do
 
   let!(:invoice_item_1) {FactoryBot.create(:invoice_item, quantity: 100, unit_price: 100, item: item_1, invoice: invoice_1, status: 0)}
   let!(:invoice_item_2) {FactoryBot.create(:invoice_item, quantity: 50, unit_price: 50, item: item_2, invoice: invoice_1, status: 1)}
+
   let!(:invoice_item_3) {FactoryBot.create(:invoice_item, quantity: 300, unit_price: 300, item: item_3, invoice: invoice_2, status: 2)}
   let!(:invoice_item_4) {FactoryBot.create(:invoice_item, item: item_4)}
 
-  it 'displays invoice attributes' do
-    visit "merchants/#{merchant_1.id}/invoices/#{invoice_1.id}"
+  before(:each) do
+    visit "/merchants/#{merchant_1.id}/invoices/#{invoice_1.id}/"
+  end
 
+
+  it 'shows invoice info' do
     expect(page).to have_content(invoice_1.id)
     expect(page).to have_content(invoice_1.status)
     expect(page).to have_content(invoice_1.created_at.strftime("%A, %B %d, %Y"))
@@ -29,11 +33,9 @@ RSpec.describe 'merchant items show page' do
     expect(page).to have_content(invoice_1.customer.last_name)
   end
 
-  xit 'displays all items associated with an invoice' do
-    visit "merchants/#{merchant_1.id}/invoices/#{invoice_1.id}"
-
-    expect(page).to have_content(invoice_item_1.invoice.items.first.name)
-    expect(page).to have_content(invoice_item_2.invoice.items.first.name)
+  it 'displays all items associated with an invoice' do
+    expect(page).to have_content(item_1.name)
+    expect(page).to have_content(item_2.name)
   end
 
   xit 'displays the quantity of the item purchased on an invoice' do

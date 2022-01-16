@@ -1,20 +1,19 @@
 class Merchant < ApplicationRecord
   has_many :items
   has_many :discounts
-  validates :name, presence: true
-
-  enum status: [:disabled, :enabled]
   has_many :invoice_items, through: :items
   has_many :invoices, through: :invoice_items
   has_many :transactions, through: :invoices
   has_many :customers, through: :invoices
-  validates :name, presence: true
 
+  validates :name, :status, presence: true
+
+  enum status: [:disabled, :enabled]
 
   def self.top_merchants
     joins(invoices: [:invoice_items, :transactions])
       .where(transactions: { result: 1 })
-      .select("merchants.*, SUM(invoice_items.unit_price * invoice_items.quantity) AS merchant_revenue")
+      .select("merchants.*, sum(invoice_items.unit_price * invoice_items.quantity) as merchant_revenue")
       .group(:id)
       .limit(5)
       .order(merchant_revenue: :desc)
@@ -22,12 +21,13 @@ class Merchant < ApplicationRecord
 
   def top_customers
     customers.joins(invoices: :transactions)
-       .select("customers.*, count(transactions.id) as transaction_id_count")
-       .limit(5)
-       .group(:id)
-       .order(transaction_id_count: :desc)
-       .where(transactions: { result: 1 } )
-
+            .where("transactions.result = ?", 1)
+            .where("invoices.status = ?", 1)
+            .select("customers.*, count('transactions.id') as transaction_count")
+            .group('customers.id')
+            .order(transaction_count: :desc)
+            .distinct
+            .limit(5)
   end
 
   def ready_items

@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Customer, type: :model do
   describe "relationships" do
     it { should have_many :invoices }
+    it { should have_many(:transactions).through(:invoices) }
   end
 
   describe "validations" do
@@ -17,6 +18,7 @@ RSpec.describe Customer, type: :model do
     let!(:transaction_2) {FactoryBot.create(:transaction, result: "success", invoice: invoice_1)}
     let!(:transaction_3) {FactoryBot.create(:transaction, result: "success", invoice: invoice_1)}
     let!(:transaction_4) {FactoryBot.create(:transaction, result: "success", invoice: invoice_1)}
+    
     describe '#transaction_count' do
       it 'returns number of transaction for customer' do
         expect(customer_1.transaction_count).to eq(4)
