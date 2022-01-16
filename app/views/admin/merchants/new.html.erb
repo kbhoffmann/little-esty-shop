@@ -1,7 +1,7 @@
 <h1>Create a New Merchant</h1>
 
-<%= form_with url: "/admin/merchants", method: :post, local: true do |f| %>
+<%= form_with model: Merchant.new, url: "/admin/merchants", local: true do |f| %>
   <%= f.label :name %>
   <%= f.text_field :name %>
-  <%= f.submit "Create Merchant" %>
+  <%= f.submit "Add Merchant" %>
 <% end %>

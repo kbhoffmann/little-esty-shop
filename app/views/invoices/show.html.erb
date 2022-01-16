@@ -1,0 +1,37 @@
+<h1>Invoice ID: <%= @invoice.id %></h1>
+
+Invoice Created: <%= @invoice.pretty_created_at %>
+Customer Name: <%= @invoice.customer_name %>
+<%= form_with model: [@merchant, @invoice], local: true do |f| %>
+  <%= f.label :status %>
+  <%= f.select :status, ["in progress", "completed", "cancelled"] %>
+  <%= f.submit "Update Invoice Status"%>
+<% end %>
+<table>
+  <tr>
+    <th>Item #</th>
+    <th>Item</th>
+    <th>Qty</th>
+    <th>Unit Price</th>
+    <th>Discount</th>
+    <th>Status</th>
+  </tr>
+  <% @invoice_items.each_with_index do |item, index| %>
+    <tr>
+        <td><%= index + 1 %></td>
+        <td><%= item.item.name %></td>
+        <td><%= item.quantity %></td>
+        <td><%= format_price(item.unit_price) %></td>
+        <td></td>
+        <td>
+          <div id= "item-<%= item.id %>">
+            <%= form_with model: [@merchant, item], local: true do |f| %>
+              <%= f.select :status, ['pending', 'packaged', 'shipped'] %>
+              <%= f.submit 'Update' %>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+  <% end %>
+
+<h2>Total: <%= @invoice.total_revenue %></h2>
