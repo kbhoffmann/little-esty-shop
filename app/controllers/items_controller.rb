@@ -18,16 +18,18 @@ class ItemsController < ApplicationController
   def update
     item = Item.find(params[:id])
     merchant = Merchant.find(params[:merchant_id])
-    if params[:status] == "enabled"
+    if params[:item][:status] == "enabled"
       item.update(status: 1)
-      redirect_to merchant_items_path(@merchant)
-    elsif params[:status] == "disabled"
+      redirect_to merchant_items_path(merchant)
+    elsif params[:item][:status] == "disabled"
       item.update(status: 0)
-      redirect_to merchant_items_path(@merchant)
-    else
-      item.update(item_params)
-      redirect_to merchant_item_path(@merchant, @item)
+      redirect_to merchant_items_path(merchant)
+    elsif item.update(item_params)
+      redirect_to merchant_item_path(merchant, item)
       flash[:alert] = "Successfully Updated Item"
+    else
+      redirect_to "/merchant/#{merchant.id}/items/#{item.id}/edit"
+      flash[:alert] = "Error: #{error_message(item.errors)}"
     end
   end
 
@@ -36,12 +38,12 @@ class ItemsController < ApplicationController
   end
 
   def create
-    merchant = Merchant.find(params[:merchant_id])
-    item = Item.create(item_params)
+    @merchant = Merchant.find(params[:merchant_id])
+    item = @merchant.items.create(item_params)
     if item.save
       redirect_to merchant_items_path(@merchant)
     else
-      redirect_to "/merchants/#{merchant.id}/items/new"
+      redirect_to "/merchants/#{@merchant.id}/items/new"
       flash[:alert] = "Error: #{error_message(item.errors)}"
     end
   end
@@ -49,6 +51,6 @@ class ItemsController < ApplicationController
   private
 
   def item_params
-    params.permit(:name, :description, :unit_price, :status)
+    params.require(:item).permit(:name, :description, :unit_price, :status)
   end
 end

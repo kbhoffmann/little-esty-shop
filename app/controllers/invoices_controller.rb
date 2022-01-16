@@ -11,10 +11,15 @@ class InvoicesController < ApplicationController
 
   def update
     invoice = Invoice.find(params[:id])
-    invoice.update(invoice_params)
     merchant = Merchant.find(params[:merchant_id])
-
-    redirect_to merchant_invoice_path(merchant, invoice)
+    invoice.update(invoice_params)
+    if invoice.save(invoice_params)
+      redirect_to merchant_invoice_path(merchant, invoice)
+      flash[:alert] = "Successfully Updated Invoice"
+    else
+      redirect_to merchant_invoice_path(merchant, invoice)
+      flash[:alert] = "Error: #{error_message(invoice.errors)}"
+    end
   end
 
 private
