@@ -33,4 +33,9 @@ RSpec.describe 'merchant discount index page' do
       expect(page).to have_content("Good Friday")
     end
   end
+
+  it 'has a link to create a new discount' do
+    click_link("Add new discount")
+    expect(current_path).to eq("/merchants/#{merchant_1.id}/discounts/new")
+  end 
 end
