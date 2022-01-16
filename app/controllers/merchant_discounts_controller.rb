@@ -20,8 +20,15 @@ class MerchantDiscountsController < ApplicationController
     else
       redirect_to "/merchants/#{@merchant.id}/discounts/new"
       flash[:alert] = "Error: #{error_message(discount.errors)}"
-    end 
+    end
   end
+
+  def destroy
+    @merchant = Merchant.find(params[:merchant_id])
+    discount = Discount.find(params[:discount_id])
+    discount.destroy
+    redirect_to "/merchants/#{@merchant.id}/discounts"
+  end 
 
 private
 
