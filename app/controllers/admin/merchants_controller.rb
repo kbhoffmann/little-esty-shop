@@ -1,7 +1,7 @@
 class Admin::MerchantsController < ApplicationController
   def index
-    @enabled_merchants = Merchant.filter_merchant_status(1)
-    @disabled_merchants = Merchant.filter_merchant_status(0)
+    @enabled_merchants = Merchant.where(status: 1)
+    @disabled_merchants = Merchant.where(status: 0)
     @merchants = Merchant.all
   end
 
@@ -14,7 +14,7 @@ class Admin::MerchantsController < ApplicationController
   end
 
   def create
-    Merchant.create!(name: params[:name])
+    Merchant.create!(merchant_params)
     redirect_to "/admin/merchants"
   end
 
@@ -22,12 +22,12 @@ class Admin::MerchantsController < ApplicationController
     merchant = Merchant.find(params[:id])
     if params[:merchant][:status] == "enabled"
       merchant.update(status: "enabled")
-      redirect_to "/admin/merchants"
+      redirect_to admin_merchants_path
     elsif params[:merchant][:status] == "disabled"
       merchant.update(status: "disabled")
-      redirect_to "/admin/merchants"
+      redirect_to admin_merchants_path
     elsif merchant.update(merchant_params)
-      redirect_to "/admin/merchants/#{merchant.id}"
+      redirect_to admin_merchant_path(@merchant)
       flash[:alert] = "Successfully Updated Item"
     else
       redirect_to "/admin/merchants/#{merchant.id}/edit"
