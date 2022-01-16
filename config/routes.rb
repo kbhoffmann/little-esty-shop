@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     patch '/invoices/:invoice_id', to: 'merchant_invoices#update'
     get '/discounts', to: 'merchant_discounts#index'
     get '/discounts/new', to: 'merchant_discounts#new'
+    delete '/discounts/:discount_id', to: 'merchant_discounts#destroy'
     get '/discounts/:discount_id', to: 'merchant_discounts#show'
     post '/discounts', to: 'merchant_discounts#create'
   end
