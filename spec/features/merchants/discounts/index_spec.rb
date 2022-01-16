@@ -40,7 +40,6 @@ RSpec.describe 'merchant discount index page' do
   end
 
   it 'can delete a discount' do
-    save_and_open_page
     within("#discount-#{discount_a.id}") do
       click_link("Delete")
     end
