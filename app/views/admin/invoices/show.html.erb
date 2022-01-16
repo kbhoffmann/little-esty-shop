@@ -9,12 +9,12 @@ Created at: <%= @invoice.pretty_created_at %><br>
   <% end %>
 <h3>Items:</h3>
 <hr>
-  <% @invoice.each_with_index do |info, index| %>
+  <% @invoice_items.each_with_index do |item, index| %>
       <div id="invoice-item-<%= index %>">
-        Item name: <%= info.name %><br>
-        Qty: <%= info.quantity %><br>
-        Unit price: <%= format_price(info.unit_price) %><br>
-        <%= info.status %><hr>
+        Item name: <%= item.item.name %><br>
+        Qty: <%= item.quantity %><br>
+        Unit price: <%= format_price(item.unit_price) %><br>
+        <%= item.status %><hr>
       </div>
   <% end %>
 

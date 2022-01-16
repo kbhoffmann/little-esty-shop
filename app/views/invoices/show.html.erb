@@ -34,4 +34,4 @@ Customer Name: <%= @invoice.customer_name %>
       </tr>
   <% end %>
 
-<h2>Total: <%= @invoice.total_revenue %></h2>
+<h2>Total: <%= format_price(@invoice.total_revenue) %></h2>
