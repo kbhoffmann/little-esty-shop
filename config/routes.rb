@@ -17,7 +17,9 @@ Rails.application.routes.draw do
     get '/discounts/new', to: 'merchant_discounts#new'
     delete '/discounts/:discount_id', to: 'merchant_discounts#destroy'
     get '/discounts/:discount_id', to: 'merchant_discounts#show'
-    post '/discounts', to: 'merchant_discounts#create'
+    post '/discounts/', to: 'merchant_discounts#create'
+    get '/discounts/:discount_id/edit', to: 'merchant_discounts#edit'
+    patch '/discounts/:discount_id', to: 'merchant_discounts#update'
   end
 
   namespace :admin do
