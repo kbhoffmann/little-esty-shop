@@ -8,8 +8,8 @@ RSpec.describe 'discount new page' do
   end
 
   it 'can create a new discount' do
-    fill_in 'amount', with: 0.1
-    fill_in 'threshold', with: 10
+    fill_in 'discount[amount]', with: 0.1
+    fill_in 'discount[threshold]', with: 10
     click_button 'Submit'
 
     expect(current_path).to eq("/merchants/#{merchant.id}/discounts")
