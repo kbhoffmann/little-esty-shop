@@ -22,8 +22,8 @@ RSpec.describe 'merchant discount index page' do
   end
 
   it 'shows each discount quantity threshold for merchant' do
-    expect(page).to have_content("of 10 items")
-    expect(page).to_not have_content("of 15 items")
+    expect(page).to have_content("of 10 or more items")
+    expect(page).to_not have_content("of 15 or more items")
   end
 
   it 'shows 3 upcoming holidays' do
@@ -36,6 +36,15 @@ RSpec.describe 'merchant discount index page' do
 
   it 'has a link to create a new discount' do
     click_link("Add new discount")
-    expect(current_path).to eq("/merchants/#{merchant_1.id}/discounts/new")
-  end 
+    expect(current_path).to eq("/merchants/#{merchant_a.id}/discounts/new")
+  end
+
+  it 'can delete a discount' do
+    save_and_open_page
+    within("#discount-#{discount_a.id}") do
+      click_link("Delete")
+    end
+    expect(current_path).to eq("/merchants/#{merchant_a.id}/discounts")
+    expect(page).to_not have_content("20% off of 10 or more items")
+  end
 end
