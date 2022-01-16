@@ -124,8 +124,12 @@ RSpec.describe Merchant, type: :model do
 
     describe '#ready_items' do
       it 'returns the items which have not yet shipped' do
-        items = [@item_3, @item_4, @item_7, @item_4, @item_8, @item_4]
-        expect(@merchant_1.ready_items).to eq(items)
+        expect(@merchant_1.ready_items[0]).to eq(@item_3)
+        expect(@merchant_1.ready_items[1]).to eq(@item_4)
+        expect(@merchant_1.ready_items[2]).to eq(@item_7)
+        expect(@merchant_1.ready_items[3]).to eq(@item_4)
+        expect(@merchant_1.ready_items[4]).to eq(@item_8)
+        expect(@merchant_1.ready_items[5]).to eq(@item_4)
       end
     end
 

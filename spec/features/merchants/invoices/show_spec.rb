@@ -32,28 +32,28 @@ RSpec.describe 'merchant items show page' do
     expect(page).to have_content(invoice_1.customer.last_name)
   end
 
-  it 'displays all items associated with an invoice' do
+  it 'shows item name' do
     expect(page).to have_content(item_1.name)
     expect(page).to have_content(item_2.name)
   end
 
-  it 'displays the quantity of the item purchased on an invoice' do
+  it 'shows item quantity' do
     expect(page).to have_content(invoice_item_1.quantity)
     expect(page).to have_content(invoice_item_2.quantity)
   end
 
-  it 'displays the unit price of the item purchased on an invoice' do
+  it 'shows item unit price' do
     expect(page).to have_content(invoice_item_1.unit_price)
     expect(page).to have_content(invoice_item_2.unit_price)
   end
 
-  it 'displays the unit price of the item purchased on an invoice' do
+  it 'shows item status' do
     expect(page).to have_content(invoice_item_1.status)
     expect(page).to have_content(invoice_item_2.status)
   end
 
   it 'displays the total revenue for an invoice' do
-    expect(page).to have_content("Total: #{invoice_1.total_revenue}")
+    expect(page).to have_content("Total: $125.00")
   end
 
   it 'can update invoice status' do

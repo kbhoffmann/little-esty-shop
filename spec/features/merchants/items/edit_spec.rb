@@ -1,36 +1,25 @@
 require 'rails_helper'
 
-RSpec.describe 'MerchantItems edit page' do
+RSpec.describe 'merchant item edit page' do
   before(:each) do
     @merchant_1 = Merchant.create!(name: "Parker")
     @merchant_2 = Merchant.create!(name: "Kerri")
-    @item1 = @merchant_1.items.create!(name: "Small Thing", description: "Its a thing that is small.", unit_price: 400)
-    @item2 = @merchant_1.items.create!(name: "Large Thing", description: "Its a thing that is large.", unit_price: 800)
-    @item3 = @merchant_2.items.create!(name: "Medium Thing", description: "Its a thing that is medium.", unit_price: 600)
-    visit "/merchants/#{@merchant_1.id}/items/#{@item1.id}/edit"
+    @item_1 = @merchant_1.items.create!(name: "Small Thing", description: "Its a thing that is small.", unit_price: 400)
+    @item_2 = @merchant_1.items.create!(name: "Large Thing", description: "Its a thing that is large.", unit_price: 800)
+    @item_3 = @merchant_2.items.create!(name: "Medium Thing", description: "Its a thing that is medium.", unit_price: 600)
+    visit "/merchants/#{@merchant_1.id}/items/#{@item_1.id}/edit"
   end
 
-  it 'has a preloaded form to edit merchant item information' do
-    visit "/merchants/#{@merchant_1.id}/items/#{@item1.id}"
-
-    click_link "Update Item"
-
-    expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/#{@item1.id}/edit")
-
-    expect(page).to have_field(:name, with: @item1.name)
-    expect(page).to have_field(:description, with: @item1.description)
-    expect(page).to have_field(:unit_price, with: @item1.unit_price)
-
-    fill_in :name, with: "Smallie"
-    fill_in :description, with: "Smallmouth Bass"
-    fill_in :unit_price, with: 40000
+  it 'can update item info' do
+    fill_in 'item[name]', with: "Smallie"
+    fill_in 'item[description]', with: "Smallmouth Bass"
+    fill_in 'item[unit_price]', with: 40000
     click_button "Update Item"
 
-    expect(current_path).to eq("/merchants/#{@merchant_1.id}/items/#{@item1.id}")
+    expect(current_path).to eq(merchant_item_path(@merchant_1, @item_1))
 
     expect(page).to have_content("Smallie")
     expect(page).to have_content("Smallmouth Bass")
     expect(page).to have_content("$400.00")
-    expect(page).to have_content("Successfully Updated Item")
   end
 end
