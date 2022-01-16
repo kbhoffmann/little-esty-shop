@@ -1,5 +1,4 @@
-<% @merchant.items.each do |item| %>
-  <% item.invoices.each do |invoice| %>
-    <%= link_to "#{invoice.id}", "/merchants/#{@merchant.id}/invoices/#{invoice.id}" %><br>
-  <% end %>
+<h1><%= @merchant.name %> Invoices</h1>
+<% @merchant.invoices.uniq.each do |invoice| %>
+  Invoice #: <%= link_to "#{invoice.id}", "/merchants/#{@merchant.id}/invoices/#{invoice.id}" %><br>
 <% end %>
