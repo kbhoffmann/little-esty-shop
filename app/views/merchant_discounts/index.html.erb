@@ -1,8 +1,11 @@
 <h1><%= @merchant.name %> Discounts</h1>
 
 <% @merchant.discounts.each do |discount| %>
-  <% link_to "Discount #{discount.id}", "/merchants/#{@merchant.id}/discounts/#{discount.id}" %>
-  Discount amount: <%= (discount.amount * 100).to_i %>% off of <%= discount.threshold %> or more items
+  <div id="discount-<%= discount.id %>">
+    <% link_to "Discount #{discount.id}", "/merchants/#{@merchant.id}/discounts/#{discount.id}" %>
+    Discount amount: <%= (discount.amount * 100).to_i %>% off of <%= discount.threshold %> or more items
+    <button><%= link_to "Delete discount", "/merchants/#{@merchant.id}/discounts/#{discount.id}", method: :delete %></button>
+  </div>
 <% end %>
 
 <div id="upcoming-holidays">
