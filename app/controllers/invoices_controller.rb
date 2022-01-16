@@ -4,11 +4,13 @@ class InvoicesController < ApplicationController
   end
 
   def show
-    @invoice = Invoice.find(params[:invoice_id])
+    @merchant = Merchant.find(params[:merchant_id])
+    @invoice = Invoice.find(params[:id])
+    @invoice_items = @invoice.invoice_items
   end
 
   def update
-    invoice = Invoice.find(params[:invoice_id])
+    invoice = Invoice.find(params[:id])
     invoice.update(invoice_params)
     merchant = Merchant.find(params[:merchant_id])
 
@@ -18,6 +20,6 @@ class InvoicesController < ApplicationController
 private
   def invoice_params
     params.require(:invoice).permit(:status)
-  end 
+  end
 
 end

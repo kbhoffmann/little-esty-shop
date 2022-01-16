@@ -6,7 +6,7 @@ class DiscountsController < ApplicationController
 
   def show
     @merchant = Merchant.find(params[:merchant_id])
-    @discount = Discount.find(params[:discount_id])
+    @discount = Discount.find(params[:id])
   end
 
   def new
@@ -17,7 +17,7 @@ class DiscountsController < ApplicationController
     @merchant = Merchant.find(params[:merchant_id])
     discount = @merchant.discounts.create(discount_params)
     if discount.save
-      redirect_to "/merchants/#{@merchant.id}/discounts"
+      redirect_to merchant_discounts_path(@merchant)
     else
       redirect_to "/merchants/#{@merchant.id}/discounts/new"
       flash[:alert] = "Error: #{error_message(discount.errors)}"
@@ -26,26 +26,26 @@ class DiscountsController < ApplicationController
 
   def edit
     @merchant = Merchant.find(params[:merchant_id])
-    @discount = Discount.find(params[:discount_id])
+    @discount = Discount.find(params[:id])
   end
 
   def update
     @merchant = Merchant.find(params[:merchant_id])
-    @discount = Discount.find(params[:discount_id])
+    @discount = Discount.find(params[:id])
     @discount.update(discount_params)
     if @discount.save
-      redirect_to "/merchants/#{@merchant.id}/discounts/#{@discount.id}"
+      redirect_to merchant_discount_path(@merchant, @discount)
     else
-      redirect_to "/merchants/#{@merchant.id}/discounts/#{@discount.id}/edit"
+      redirect_to merchant_discount_edit_path(@merchant, @discount)
       flash[:alert] = "Error: #{error_message(discount.errors)}"
     end
   end
 
   def destroy
     @merchant = Merchant.find(params[:merchant_id])
-    discount = Discount.find(params[:discount_id])
+    discount = Discount.find(params[:id])
     discount.destroy
-    redirect_to "/merchants/#{@merchant.id}/discounts"
+    redirect_to merchant_discounts_path(@merchant)
   end
 
 private

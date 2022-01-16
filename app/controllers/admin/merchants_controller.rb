@@ -27,7 +27,7 @@ class Admin::MerchantsController < ApplicationController
       merchant.update(status: "disabled")
       redirect_to admin_merchants_path
     elsif merchant.update(merchant_params)
-      redirect_to admin_merchant_path(@merchant)
+      redirect_to admin_merchant_path(merchant)
       flash[:alert] = "Successfully Updated Item"
     else
       redirect_to "/admin/merchants/#{merchant.id}/edit"
