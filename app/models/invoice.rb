@@ -25,14 +25,14 @@ class Invoice < ApplicationRecord
   end
 
   def total_revenue
-    invoice_items.sum("unit_price * quantity")
+    invoice_items.sum("unit_price * quantity").to_f / 100
   end
 
   def total_with_discount
     invoice_items.sum do |invoice_item|
       invoice_item.discounted_total
     end
-  end 
+  end
 
 
 end
