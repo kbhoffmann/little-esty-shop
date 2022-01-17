@@ -22,7 +22,9 @@ Customer Name: <%= @invoice.customer_name %>
         <td><%= item.item.name %></td>
         <td><%= item.quantity %></td>
         <td><%= format_price(item.unit_price) %></td>
-        <td></td>
+        <td><% if item.applicable_discount %>
+              <%= link_to item.applicable_discount.id, merchant_discount_path(@merchant, item.applicable_discount.id) %>
+            <% end %></td>
         <td>
           <div id= "item-<%= item.id %>">
             <%= form_with model: [@merchant, item], local: true do |f| %>
