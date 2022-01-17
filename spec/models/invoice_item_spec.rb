@@ -46,8 +46,8 @@ RSpec.describe InvoiceItem, type: :model do
   describe 'instance methods' do
     let!(:merchant) {FactoryBot.create(:merchant)}
 
-    let!(:discount_1) {Discount.create(merchant: merchant, amount: 0.1, threshold: 10)}
-    let!(:discount_2) {Discount.create(merchant: merchant, amount: 0.2, threshold: 20)}
+    let!(:discount_1) {Discount.create(merchant: merchant, amount: 10, threshold: 10)}
+    let!(:discount_2) {Discount.create(merchant: merchant, amount: 20, threshold: 20)}
 
     let!(:item) {FactoryBot.create(:item, merchant: merchant)}
     let!(:invoice) {FactoryBot.create(:invoice)}
@@ -70,7 +70,7 @@ RSpec.describe InvoiceItem, type: :model do
       it 'returns total for invoice_item with applicable discounts' do
         expect(invoice_item.discounted_total).to eq(13.5)
       end
-    end 
+    end
   end
 
 end

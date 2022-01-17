@@ -22,7 +22,7 @@ RSpec.describe Invoice, type: :model do
     let!(:item_2) {FactoryBot.create(:item, merchant: merchant_1)}
     let!(:invoice_item_1) {FactoryBot.create(:invoice_item, invoice: invoice_1, item: item_1, status: "pending", quantity: 5, unit_price: 1000)}
     let!(:invoice_item_2) {FactoryBot.create(:invoice_item, invoice: invoice_1, item: item_2, quantity: 10, unit_price: 2000)}
-    let!(:discount) {Discount.create(merchant: merchant_1, amount: 0.1, threshold: 10)}
+    let!(:discount) {Discount.create(merchant: merchant_1, amount: 10, threshold: 10)}
 
     describe '#pretty_created_at' do
       it 'formats created_at datetime' do
@@ -48,7 +48,7 @@ RSpec.describe Invoice, type: :model do
 
     describe '#total_revenue' do
       it 'calculates total revenue for invoice' do
-        expect(invoice_1.total_revenue).to eq(25000)
+        expect(invoice_1.total_revenue).to eq(250)
       end
     end
 
