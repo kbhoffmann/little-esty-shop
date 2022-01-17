@@ -4,10 +4,10 @@ RSpec.describe 'merchant invoice show page' do
   let!(:merchant_1) {FactoryBot.create(:merchant)}
   let!(:merchant_2) {FactoryBot.create(:merchant)}
 
-  let!(:item_1) {FactoryBot.create(:item, merchant: merchant_1, unit_price: 100)}
-  let!(:item_2) {FactoryBot.create(:item, merchant: merchant_1, unit_price: 50)}
-  let!(:item_3) {FactoryBot.create(:item, merchant: merchant_1, unit_price: 300)}
-  let!(:item_4) {FactoryBot.create(:item, merchant: merchant_2, unit_price: 400)}
+  let!(:item_1) {FactoryBot.create(:item, merchant: merchant_1)}
+  let!(:item_2) {FactoryBot.create(:item, merchant: merchant_1)}
+  let!(:item_3) {FactoryBot.create(:item, merchant: merchant_1)}
+  let!(:item_4) {FactoryBot.create(:item, merchant: merchant_2)}
 
   let!(:invoice_1) {FactoryBot.create(:invoice, status: 0)}
   let!(:invoice_2) {FactoryBot.create(:invoice, status: 1)}
@@ -20,7 +20,9 @@ RSpec.describe 'merchant invoice show page' do
   let!(:invoice_item_3) {FactoryBot.create(:invoice_item, quantity: 300, unit_price: 300, item: item_3, invoice: invoice_2, status: 2)}
   let!(:invoice_item_4) {FactoryBot.create(:invoice_item, item: item_4)}
 
-  let!(:discount) {Discount.create(merchant: merchant_1, amount: 0.1, threshold: 100)}
+  let!(:discount) {Discount.create(merchant: merchant_1, amount: 10, threshold: 100)}
+
+
   before(:each) do
     visit merchant_invoice_path(merchant_1, invoice_1)
   end
@@ -73,6 +75,70 @@ RSpec.describe 'merchant invoice show page' do
       expect(current_path).to eq(merchant_invoice_path(merchant_1, invoice_1))
       expect(page).to have_select(:invoice_item_status, selected: 'packaged')
     end
+  end
+
+  it 'wont apply discounts unless threshold is met (ex 1)' do
+    discount_a = Discount.create!(amount: 20, threshold: 10, merchant: merchant_1)
+    invoice_a = FactoryBot.create(:invoice)
+    ii_1 = FactoryBot.create(:invoice_item, invoice: invoice_a, item: item_1, unit_price: 100, quantity: 5)
+    ii_2 = FactoryBot.create(:invoice_item, invoice: invoice_a, item: item_2, unit_price: 100, quantity: 5)
+
+    expect(ii_1.applicable_discount).to eq(nil)
+    expect(ii_2.applicable_discount).to eq(nil)
+    expect(invoice_a.total_revenue).to eq(invoice_a.total_with_discount)
+  end
+
+  it 'only applies to items that meet quantity threshold (ex 2)' do
+    discount_a = Discount.create!(amount: 20, threshold: 10, merchant: merchant_1)
+    invoice_a = FactoryBot.create(:invoice)
+    ii_1 = FactoryBot.create(:invoice_item, invoice: invoice_a, item: item_1, unit_price: 100, quantity: 10)
+    ii_2 = FactoryBot.create(:invoice_item, invoice: invoice_a, item: item_2, unit_price: 100, quantity: 5)
+
+    expect(ii_1.applicable_discount).to eq(discount_a)
+    expect(ii_2.applicable_discount).to eq(nil)
+    expect(invoice_a.total_revenue).to eq(15)
+    expect(invoice_a.total_with_discount).to eq(13)
+  end
+
+  it 'applies the most appropriate discount to each applicable item (ex 3)' do
+    discount_a = Discount.create!(amount: 20, threshold: 10, merchant: merchant_1)
+    discount_b = Discount.create!(amount: 30, threshold: 15, merchant: merchant_1)
+    invoice_a = FactoryBot.create(:invoice)
+    ii_1 = FactoryBot.create(:invoice_item, invoice: invoice_a, item: item_1, unit_price: 100, quantity: 12)
+    ii_2 = FactoryBot.create(:invoice_item, invoice: invoice_a, item: item_2, unit_price: 100, quantity: 15)
+
+    expect(ii_1.applicable_discount).to eq(discount_a)
+    expect(ii_2.applicable_discount).to eq(discount_b)
+    expect(invoice_a.total_revenue).to eq(27)
+    expect(invoice_a.total_with_discount).to eq(20.1)
+  end
+
+  it 'applies highest discount amount per qualifying item (ex 4)' do
+    discount_a = Discount.create!(amount: 20, threshold: 10, merchant: merchant_1)
+    discount_b = Discount.create!(amount: 15, threshold: 15, merchant: merchant_1)
+    invoice_a = FactoryBot.create(:invoice)
+    ii_1 = FactoryBot.create(:invoice_item, invoice: invoice_a, item: item_1, unit_price: 100, quantity: 12)
+    ii_2 = FactoryBot.create(:invoice_item, invoice: invoice_a, item: item_2, unit_price: 100, quantity: 15)
+
+    expect(ii_1.applicable_discount).to eq(discount_a)
+    expect(ii_2.applicable_discount).to eq(discount_a)
+    expect(invoice_a.total_revenue).to eq(27)
+    expect(invoice_a.total_with_discount).to eq(21.6)
+  end
+
+  it 'can only apply discounts to items belonging to discount merchant (ex 5)' do
+    discount_a = Discount.create!(amount: 20, threshold: 10, merchant: merchant_1)
+    discount_b = Discount.create!(amount: 30, threshold: 15, merchant: merchant_1)
+    invoice_a = FactoryBot.create(:invoice)
+    ii_1 = FactoryBot.create(:invoice_item, invoice: invoice_a, item: item_1, unit_price: 100, quantity: 12)
+    ii_2 = FactoryBot.create(:invoice_item, invoice: invoice_a, item: item_2, unit_price: 100, quantity: 15)
+    ii_3 = FactoryBot.create(:invoice_item, invoice: invoice_a, item: item_4, unit_price: 100, quantity: 15)
+
+    expect(ii_1.applicable_discount).to eq(discount_a)
+    expect(ii_2.applicable_discount).to eq(discount_b)
+    expect(ii_3.applicable_discount).to eq(nil)
+    expect(invoice_a.total_revenue).to eq(42)
+    expect(invoice_a.total_with_discount).to eq(35.1)
   end
 
   it 'shows total after discounts' do
