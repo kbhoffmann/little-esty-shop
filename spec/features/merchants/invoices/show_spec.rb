@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'merchant items show page' do
+RSpec.describe 'merchant invoice show page' do
   let!(:merchant_1) {FactoryBot.create(:merchant)}
   let!(:merchant_2) {FactoryBot.create(:merchant)}
 
@@ -20,6 +20,7 @@ RSpec.describe 'merchant items show page' do
   let!(:invoice_item_3) {FactoryBot.create(:invoice_item, quantity: 300, unit_price: 300, item: item_3, invoice: invoice_2, status: 2)}
   let!(:invoice_item_4) {FactoryBot.create(:invoice_item, item: item_4)}
 
+  let!(:discount) {Discount.create(merchant: merchant_1, amount: 0.1, threshold: 100)}
   before(:each) do
     visit merchant_invoice_path(merchant_1, invoice_1)
   end
@@ -75,7 +76,14 @@ RSpec.describe 'merchant items show page' do
   end
 
   it 'shows total after discounts' do
-    save_and_open_page
-    expect(page).to have_content(invoice_1.total_with_discount)
+    expect(page).to have_content("Total after discounts: $115.00")
   end
+
+  it 'links to discount applied' do
+    save_and_open_page
+    click_link("#{discount.id}")
+    expect(current_path).to eq(merchant_discount_path(merchant_1, discount))
+  end
+
+
 end
