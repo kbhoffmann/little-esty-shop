@@ -75,7 +75,6 @@ RSpec.describe 'admin invoice show page' do
   end
 
   it 'shows invoice total after discounts applied' do
-    save_and_open_page
     expect(page).to have_content("$#{invoice_1.total_with_discount}0")
   end
 

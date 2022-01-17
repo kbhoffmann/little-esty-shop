@@ -80,10 +80,7 @@ RSpec.describe 'merchant invoice show page' do
   end
 
   it 'links to discount applied' do
-    save_and_open_page
     click_link("#{discount.id}")
     expect(current_path).to eq(merchant_discount_path(merchant_1, discount))
   end
-
-
 end
