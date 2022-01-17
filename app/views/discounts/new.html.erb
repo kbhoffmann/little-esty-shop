@@ -2,7 +2,7 @@
 
 <%= form_with model: [ @merchant, @merchant.discounts.build ], local: true do |f| %>
   <%= f.label "Percent off:" %>
-  <%= f.number_field :amount, min: 0.05, max: 0.95, step: 0.05 %>
+  <%= f.number_field :amount, min: 5, max: 95, step: 1 %>
   <%= f.label "Min item qty:" %>
   <%= f.number_field :threshold %>
   <%= f.submit "Submit" %>
