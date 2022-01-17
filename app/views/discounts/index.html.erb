@@ -3,7 +3,7 @@
 <% @merchant.discounts.each do |discount| %>
   <div id="discount-<%= discount.id %>">
     <% link_to "Discount #{discount.id}", "/merchants/#{@merchant.id}/discounts/#{discount.id}" %>
-    Discount amount: <%= (discount.amount * 100).to_i %>% off of <%= discount.threshold %> or more items
+    Discount amount: <%= discount.amount %>% off when ordering <%= discount.threshold %> or more of an item
     <button><%= link_to "Delete discount", "/merchants/#{@merchant.id}/discounts/#{discount.id}", method: :delete %></button>
   </div>
 <% end %>
