@@ -73,4 +73,9 @@ RSpec.describe 'merchant items show page' do
       expect(page).to have_select(:invoice_item_status, selected: 'packaged')
     end
   end
+
+  it 'shows total after discounts' do
+    save_and_open_page
+    expect(page).to have_content(invoice_1.total_with_discount)
+  end
 end
