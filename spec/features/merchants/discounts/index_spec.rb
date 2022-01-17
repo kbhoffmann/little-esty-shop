@@ -4,8 +4,8 @@ RSpec.describe 'merchant discount index page' do
   let!(:merchant_a) {FactoryBot.create(:merchant)}
   let!(:merchant_b) {FactoryBot.create(:merchant)}
 
-  let!(:discount_a) {Discount.create(amount: 0.2, threshold: 10, merchant: merchant_a)}
-  let!(:discount_a2) {Discount.create(amount: 0.3, threshold: 15, merchant: merchant_b)}
+  let!(:discount_a) {Discount.create(amount: 20, threshold: 10, merchant: merchant_a)}
+  let!(:discount_a2) {Discount.create(amount: 30, threshold: 15, merchant: merchant_b)}
 
   let!(:item_a1) {FactoryBot.create(:item, merchant: merchant_a)}
   let!(:item_a2) {FactoryBot.create(:item, merchant: merchant_a)}
@@ -22,8 +22,8 @@ RSpec.describe 'merchant discount index page' do
   end
 
   it 'shows each discount quantity threshold for merchant' do
-    expect(page).to have_content("of 10 or more items")
-    expect(page).to_not have_content("of 15 or more items")
+    expect(page).to have_content("10 or more of an item")
+    expect(page).to_not have_content("15 or more of an item")
   end
 
   it 'shows 3 upcoming holidays' do
@@ -44,6 +44,6 @@ RSpec.describe 'merchant discount index page' do
       click_link("Delete")
     end
     expect(current_path).to eq("/merchants/#{merchant_a.id}/discounts")
-    expect(page).to_not have_content("20% off of 10 or more items")
+    expect(page).to_not have_content("20% off when ordering 10 or more of an item")
   end
 end

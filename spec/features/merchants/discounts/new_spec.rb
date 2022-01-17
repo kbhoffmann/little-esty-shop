@@ -8,11 +8,11 @@ RSpec.describe 'discount new page' do
   end
 
   it 'can create a new discount' do
-    fill_in 'discount[amount]', with: 0.1
+    fill_in 'discount[amount]', with: 10
     fill_in 'discount[threshold]', with: 10
     click_button 'Submit'
 
     expect(current_path).to eq("/merchants/#{merchant.id}/discounts")
-    expect(page).to have_content("10% off of 10 or more items")
+    expect(page).to have_content("10% off when ordering 10 or more of an item")
   end
 end
