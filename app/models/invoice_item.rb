@@ -19,18 +19,19 @@ class InvoiceItem < ApplicationRecord
   end
 
   def applicable_discount
-    item.merchant.discounts.where('threshold <= ?', quantity).order(amount: :asc).first
+    item.merchant.discounts.where('threshold <= ?', quantity).order(amount: :desc).first
   end
 
   def order_total
-    (unit_price * quantity)/100
+    (unit_price.to_f / 100) * quantity
   end
 
   def discounted_total
     if applicable_discount.nil?
       order_total
     else
-      (order_total - (applicable_discount.amount * order_total))
+      discount_amount = (applicable_discount.amount.to_f / 100) * order_total
+      order_total - discount_amount
     end
   end
 end
