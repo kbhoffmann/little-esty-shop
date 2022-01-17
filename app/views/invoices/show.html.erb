@@ -35,3 +35,4 @@ Customer Name: <%= @invoice.customer_name %>
   <% end %>
 
 <h2>Total: <%= format_price(@invoice.total_revenue) %></h2>
+<h2>Total after discounts: <%= number_to_currency(@invoice.total_with_discount) %></h2>
