@@ -19,3 +19,4 @@ Created at: <%= @invoice.pretty_created_at %><br>
   <% end %>
 
   Total: <%= format_price(@invoice.total_revenue) %><br>
+  Total after discounts: <%= number_to_currency(@invoice.total_with_discount) %>
