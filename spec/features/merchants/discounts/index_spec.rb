@@ -28,9 +28,9 @@ RSpec.describe 'merchant discount index page' do
 
   it 'shows 3 upcoming holidays' do
     within("#upcoming-holidays") do
-      expect(page).to have_content("Martin Luther King, Jr. Day")
       expect(page).to have_content("Washington's Birthday")
       expect(page).to have_content("Good Friday")
+      expect(page).to have_content("Memorial Day")
     end
   end
 
