@@ -18,5 +18,5 @@ Created at: <%= @invoice.pretty_created_at %><br>
       </div>
   <% end %>
 
-  Total: <%= format_price(@invoice.total_revenue) %><br>
+  Total: <%= number_to_currency(@invoice.total_revenue) %><br>
   Total after discounts: <%= number_to_currency(@invoice.total_with_discount) %>
