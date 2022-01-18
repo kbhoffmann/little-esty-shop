@@ -19,7 +19,7 @@ class InvoiceItem < ApplicationRecord
   end
 
   def applicable_discount
-    item.merchant.discounts.where('threshold <= ?', quantity).order(amount: :desc).first
+    discounts.where('threshold <= ?', quantity).order(amount: :desc).first
   end
 
   def order_total
