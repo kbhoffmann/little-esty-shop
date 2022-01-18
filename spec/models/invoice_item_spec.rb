@@ -51,24 +51,24 @@ RSpec.describe InvoiceItem, type: :model do
 
     let!(:item) {FactoryBot.create(:item, merchant: merchant)}
     let!(:invoice) {FactoryBot.create(:invoice)}
-    let!(:invoice_item) {FactoryBot.create(:invoice_item, invoice: invoice, item: item, unit_price: 100, quantity: 15)}
+    let!(:ii) {FactoryBot.create(:invoice_item, invoice: invoice, item: item, unit_price: 100, quantity: 15)}
 
     describe 'applicable_discount' do
       it 'calculates amount of discount that applies' do
-        expect(invoice_item.applicable_discount).to eq(discount_1)
-        expect(invoice_item.applicable_discount).to_not eq(discount_2)
+        expect(ii.applicable_discount).to eq(discount_1)
+        expect(ii.applicable_discount).to_not eq(discount_2)
       end
     end
 
     describe 'order_total' do
       it 'returns total of each invoice_item' do
-        expect(invoice_item.order_total).to eq(15)
+        expect(ii.order_total).to eq(15)
       end
     end
 
     describe 'discounted_total' do
       it 'returns total for invoice_item with applicable discounts' do
-        expect(invoice_item.discounted_total).to eq(13.5)
+        expect(ii.discounted_total).to eq(13.5)
       end
     end
   end
