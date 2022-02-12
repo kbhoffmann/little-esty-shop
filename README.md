@@ -1,29 +1,39 @@
 ![Screen Shot 2022-01-09 at 11 27 27 PM](https://user-images.githubusercontent.com/88950699/148721783-bbc0ba33-af58-4a40-bbbd-80e08eaf6b54.png)
 
-A simple and lightweight e-commerce platform that allows for unlimited customization.
+Project stats:
+   ![languages](https://img.shields.io/github/languages/top/kbhoffmann/little-esty-shop?color=red)
+   ![closed PRs](https://img.shields.io/github/issues-pr-closed/kbhoffmann/little-esty-shop?style=flat-square)   
+
+## A simple and lightweight e-commerce platform that allows for unlimited customization.
 - Allows for admin and merchant users
    - Admin users can manage merchant accounts, track customer invoices, and view sales data.  
-   - Merchant users can manage their inventory, create invoices and transactions, track order status, and even view data showing best-selling items, repeat customers, and more. 
+   - Merchant users can manage their inventory, create invoices and transactions, track order status, and even view data showing best-selling items, repeat              customers, and more. 
+
+
+## Learning Goals for this Turing School Group Project:
+  - Practice designing a normalized database schema and defining model relationships
+  - Utilize advanced routing techniques including namespacing to organize and group like functionality together.
+  - Utilize advanced active record techniques to perform complex database queries
 
 → [Click here to navigate a demo as an admin user](https://agile-springs-94475.herokuapp.com/admin)  
 → [Click here to navigate a demo as a merchant user](https://agile-springs-94475.herokuapp.com/merchants/1/dashboard)
  
 Created using:  
-![RoR](https://img.shields.io/badge/Ruby_on_Rails-CC0000?style=for-the-badge&logo=ruby-on-rails&logoColor=white)
-![pgsql](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)  
-Ruby 2.7.2 - Rails 5.2.6 - PostgreSQL 14.1  
+   ![RoR](https://img.shields.io/badge/Ruby_on_Rails-CC0000?style=for-the-badge&logo=ruby-on-rails&logoColor=white)
+   ![pgsql](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+   ![heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)  
+   Ruby 2.7.2 - Rails 5.2.6 - PostgreSQL 14.1  
 
-Tested using:   
-![rspec](https://img.shields.io/gem/v/rspec-rails?label=rspec&style=flat-square)
-![shoulda](https://img.shields.io/gem/v/shoulda-matchers?label=shoulda-matchers&style=flat-square)
-![capybara](https://img.shields.io/gem/v/capybara?label=capybara&style=flat-square)
-![simplecov](https://img.shields.io/gem/v/simplecov?label=simplecov&style=flat-square)
-![orderly](https://img.shields.io/gem/v/orderly?label=orderly&style=flat-square)
-![factory](https://img.shields.io/gem/v/factory_bot?label=factory%20bot&style=flat-square)
-![faker](https://img.shields.io/gem/v/faker?label=faker&style=flat-square)
+Gems used for testing:   
+   ![rspec](https://img.shields.io/gem/v/rspec-rails?label=rspec&style=flat-square)
+   ![shoulda](https://img.shields.io/gem/v/shoulda-matchers?label=shoulda-matchers&style=flat-square)
+   ![capybara](https://img.shields.io/gem/v/capybara?label=capybara&style=flat-square)
+   ![simplecov](https://img.shields.io/gem/v/simplecov?label=simplecov&style=flat-square)
+   ![orderly](https://img.shields.io/gem/v/orderly?label=orderly&style=flat-square)
+   ![factory](https://img.shields.io/gem/v/factory_bot?label=factory%20bot&style=flat-square)
+   ![faker](https://img.shields.io/gem/v/faker?label=faker&style=flat-square)
+   ![simplecov](https://img.shields.io/gem/v/simplecov?color=blue&label=simplecov) 
 
-![closed PRs](https://img.shields.io/github/issues-pr-closed/kbhoffmann/little-esty-shop?style=flat-square)   
 
 ## Contributors 
 <table>
@@ -45,6 +55,6 @@ Tested using:
 ## Phases
 
 1. [Database Setup](./doc/db_setup.md)
-1. [User Stories](./doc/user_stories.md)
-1. [Extensions](./doc/extensions.md)
-1. [Evaluation](./doc/evaluation.md)
+2. [User Stories](./doc/user_stories.md)
+3. [Extensions](./doc/extensions.md)
+4. [Evaluation](./doc/evaluation.md)
