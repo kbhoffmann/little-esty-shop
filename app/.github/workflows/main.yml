@@ -1,0 +1,30 @@
+name: "Pre-Merge Checks"
+on:
+  pull_request:
+    types: [opened, synchronize, edited, reopened]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: Sector-272-Outpost-Market-test
+          POSTGRES_USER: Sector-272-Outpost-Market
+          POSTGRES_PASSWORD: ''
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/Sector-272-Outpost-Market-test"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1.99.0
+      - name: Install Gems
+        run: bundle
+      - name: Set up DB
+        run: rails db:migrate
+      - name: Run Rspec
+        run: rspec
