@@ -1,2 +1,21 @@
-<h1>ADMIN <%= @merchant.name %></h1>
-<%= link_to "Update Info", edit_admin_merchant_path %>
+<div class="container">
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand mb-0 h1">Admin Dashboard</a>
+    <ul class="nav nav-pills justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link" href="/admin">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="<%= admin_merchants_path %>">Merchants</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<%= admin_invoices_path %>">Invoices</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<div class="container">
+  <h4 style="text-align:center"><%= @merchant.name %></h4>
+
+  <%= link_to "Update Info", edit_admin_merchant_path %>
+</div>

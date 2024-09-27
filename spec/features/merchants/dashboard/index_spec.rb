@@ -107,7 +107,7 @@ RSpec.describe 'Merchant Dashboard' do
   end
 
   it 'lists the item names of those that have been ordered but not shipped'  do # with the invoice id, as a link, next to them'
-    within "#merchants-item-#{@item3.name}" do
+    within "#merchants-item-#{@item3.id}" do
       expect(page).to have_content(@item3.name)
 
       expect(page).to_not have_content(@item4.name)
@@ -117,7 +117,7 @@ RSpec.describe 'Merchant Dashboard' do
       expect(page).to_not have_content(@item6.name)
     end
 
-    within "#merchants-item-#{@item4.name}" do
+    within "#merchants-item-#{@item4.id}" do
       expect(page).to have_content(@item4.name)
 
       expect(page).to_not have_content(@item3.name)
@@ -127,7 +127,7 @@ RSpec.describe 'Merchant Dashboard' do
       expect(page).to_not have_content(@item6.name)
     end
 
-    within "#merchants-item-#{@item5.name}" do
+    within "#merchants-item-#{@item5.id}" do
       expect(page).to have_content(@item5.name)
 
       expect(page).to_not have_content(@item3.name)
@@ -139,32 +139,32 @@ RSpec.describe 'Merchant Dashboard' do
   end
 
   it 'has the invoice id as a link next to the item name' do
-    within "#merchants-item-#{@item3.name}" do
+    within "#merchants-item-#{@item3.id}" do
       expect(page).to have_content(@item3.invoices.first.id)
       expect(page).to have_link("#{@item3.invoices.first.id}", href: "/merchants/#{@merchant.id}/invoices/#{@item3.invoices.first.id}")
     end
 
-    within "#merchants-item-#{@item4.name}" do
+    within "#merchants-item-#{@item4.id}" do
       expect(page).to have_content(@item4.invoices.first.id)
       expect(page).to have_link("#{@item4.invoices.first.id}", href: "/merchants/#{@merchant.id}/invoices/#{@item4.invoices.first.id}")
     end
 
-    within "#merchants-item-#{@item5.name}" do
+    within "#merchants-item-#{@item5.id}" do
       expect(page).to have_content(@item5.invoices.first.id)
       expect(page).to have_link("#{@item5.invoices.first.id}", href: "/merchants/#{@merchant.id}/invoices/#{@item5.invoices.first.id}")
     end
   end
 
   it 'has the date of the invoice creation next to each item' do
-    within "#merchants-item-#{@item3.name}" do
+    within "#merchants-item-#{@item3.id}" do
       expect(page).to have_content(@item3.invoices.first.created_at.strftime("%A, %B %-d, %Y"))
     end
 
-    within "#merchants-item-#{@item4.name}" do
+    within "#merchants-item-#{@item4.id}" do
       expect(page).to have_content(@item4.invoices.first.created_at.strftime("%A, %B %-d, %Y"))
     end
 
-    within "#merchants-item-#{@item5.name}" do
+    within "#merchants-item-#{@item5.id}" do
       expect(page).to have_content(@item5.invoices.first.created_at.strftime("%A, %B %-d, %Y"))
     end
   end

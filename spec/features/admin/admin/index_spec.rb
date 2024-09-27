@@ -48,23 +48,17 @@ RSpec.describe 'admin index page' do
   end
 
   it 'shows admin header' do
-    within("#admin-dashboard-header") do
-      expect(page).to have_content("ADMIN DASHBOARD")
-    end
+    expect(page).to have_content("Admin Dashboard")
   end
 
   it 'links to merchants index' do
-    within("#admin-dashboard-nav") do
-      click_link("Merchants")
-      expect(current_path).to eq("/admin/merchants")
-    end
+    click_link("Merchants")
+    expect(current_path).to eq("/admin/merchants")
   end
 
   it 'links to invoices index' do
-    within("#admin-dashboard-nav") do
-      click_link("Invoices")
-      expect(current_path).to eq("/admin/invoices")
-    end
+    click_link("Invoices")
+    expect(current_path).to eq("/admin/invoices")
   end
 
   it 'shows the names of the top 5 customers' do

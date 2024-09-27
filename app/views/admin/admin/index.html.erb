@@ -1,30 +1,41 @@
-<section id="admin-dashboard-header">
-  <h1>ADMIN DASHBOARD</h1>
-</section>
-<section id="admin-dashboard-nav">
-  <%= link_to "Merchants", admin_merchants_path %>
-  <%= link_to "Invoices", admin_invoices_path %>
-</section>
+<div class="container">
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand mb-0 h1">Admin Dashboard</a>
+    <ul class="nav nav-pills justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<%= admin_merchants_path %>">Merchants</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<%= admin_invoices_path %>">Invoices</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<div class="container">
+  <h3>Top Customers:</h3>
+  <table>
+    <tr>
+      <th>Customer Name</th>
+      <th>Number of Successful Transactions</th>
+    </tr>
+    <% @customers.top_5.each do |customer| %>
+      <div id="top-customer-<%= customer.last_name %>">
+        <tr>
+          <td><%= customer.first_name %> <%= customer.last_name %></td>
+          <td><%= customer.transaction_count %></td>
+        </tr>
+      </div>
+    <% end %>
+  </table>
 
-<h3>Top Customers:</h3>
-<table>
-  <tr>
-    <th>Customer Name</th>
-    <th>Number of Successful Transactions</th>
-  </tr>
-  <% @customers.top_5.each do |customer| %>
-    <div id="top-customer-<%= customer.last_name %>">
-      <tr>
-        <td><%= customer.first_name %> <%= customer.last_name %></td>
-        <td><%= customer.transaction_count %></td>
-      </tr>
-    </div>
+  <h3>Incomplete Invoices</h3>
+
+  <% @invoices.incomplete.each do |invoice| %>
+    <p>Invoice: <%= link_to invoice.id, "/admin/invoices/#{invoice.id}" %>
+      Date Created: <%= invoice.pretty_created_at %>
+    </p>
   <% end %>
-</table>
-
-<h3>Incomplete Invoices</h3>
-
-<% @invoices.incomplete.each do |invoice| %>
-  <p>Invoice: <%= link_to invoice.id, "/admin/invoices/#{invoice.id}" %>
-  Date Created: <%= invoice.pretty_created_at %></p>
-<% end %>
+</div>
